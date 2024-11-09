@@ -2,7 +2,7 @@
 extends: .releaserc.base
 name: Ragdata's Dotfiles
 description: The dotfiles I use to manage my environment across multiple machines - and the means to manage the process.
-version: v0.1.0
+version: 0.1.0
 # copyright:
 # website:
 repo_url: https://github.com/ragdata/dotfiles-py
