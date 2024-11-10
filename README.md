@@ -132,10 +132,10 @@ If you like this repository, please give it a ⭐ (it really does help)
 [python]: https://img.shields.io/badge/Python-3.10-0c7dbe?logo=python&logoColor=FFFF00&label=Python&labelColor=31383f
 [version]: https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fragdata%2Fdotfiles-py%2Fmaster%2F.github%2F.releaserc&query=%24.version&label=Version&color=548af7&labelColor=31383f
 [visitors-badge]: https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2Fragdata%2F.dotfiles&countColor=%23d20000
-[wakatime-badge]: https://wakatime.com/badge/github/Ragdata/dotfiles-py.svg?style=for-the-badge
+[wakatime-badge]: https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/7198ad25-fb55-4ea7-83c1-b8ad5baee4a4.svg?style=for-the-badge
 
 [codacy-repo]: https://app.codacy.com/gh/Ragdata/dotfiles-py/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade
-[wakatime-repo]: https://wakatime.com/badge/github/Ragdata/dotfiles-py
+[wakatime-repo]: https://wakatime.com/badge/user/7e04d9d4-3a44-495e-b622-69fdbafd036c/project/7198ad25-fb55-4ea7-83c1-b8ad5baee4a4
 
 [github-profile]: https://github.com/Ragdata
 
