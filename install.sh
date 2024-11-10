@@ -152,5 +152,8 @@ echo "Installing yaspin"
 yes | pip install yaspin
 echoResult $?
 ####################################################################
-# MAIN
+# INSTALL DOTFILES_PY
 ####################################################################
+cd "$HOME/.local/dotfiles-py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py'"
+pip install -e .
+echoResult $?
