@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=75.3", "wheel>=0.45"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dotfiles-py"
+dynamic = ["version"]
+description = "A tool for managing dotfiles using Python3.10+"
+authors = [{name = "Ragdata", email = "ragdata@ragdata.dev"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+keywords = {"dotfiles", "dotfile-management"}
+dependencies = [
+    "GitPython>=3.1",
+    "PyGithub>=2.4",
+    "dynaconf>=3.2",
+    "gitdb>=4.0",
+    "yaspin>=3.1"
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Unix Shell"
+]
+
+[project.urls]
+Homepage = "https://github.com/Ragdata/dotfiles-py"
+#Documentation = ""
+Repository = "https://github.com/Ragdata/dotfiles-py"
+#Issues = ""
+#Changelog = ""
+
+#[project.scripts]
+
+[project.optional-dependencies]
+tests = ["pytest>=8.3"]
