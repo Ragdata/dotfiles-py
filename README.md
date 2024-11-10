@@ -36,6 +36,14 @@ If you're new to `dotfiles`, you're not going to have a good time here.  The fir
 
 ## [Installation](#top) 📂
 
+### Option 1: Remote Installation Script
+
+You can install my `dotfiles` with a single command:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Ragdata/dotfiles-py/refs/heads/master/install.sh | bash
+```
+
 [`^ Top`](#top)
 
 ## [Features](#top) ✨
