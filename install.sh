@@ -28,14 +28,14 @@ export DOT_USER="$HOME/.dotfiles"
 ####################################################################
 echoResult()
 {
-    local result="${1:-1}" ok="${2:-'OK'}" fail="${3:-'FAILURE'}"
+    local result="${1:-1}" ok="${2:-OK}" fail="${3:-FAILURE}"
 
-    if $result; then echo "$ok"; else exitMsg "$fail"; fi
+    if [ "$result" -eq 0 ]; then echo "$ok"; else exitMsg "$fail"; fi
 }
 
 exitMsg()
 {
-    echo "${1:-'Unknown Error!'}"
+    echo "${1:-Unknown Error!}"
     exit "${2:-1}"
 }
 
