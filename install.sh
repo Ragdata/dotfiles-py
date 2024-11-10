@@ -100,33 +100,12 @@ echoResult $?
 ####################################################################
 if ! di::checkPkg "pythonpy"; then
     echo "Installing / Updating Python3"
-    sudo apt -qq -y install python3 pythonpy
+    sudo apt -qq -y install python3 python3-pip pipx pythonpy
     echoResult $?
-fi
-####################################################################
-# GET PIP
-####################################################################
-if [ -d "$HOME/downloads" ]; then
-    if [ -f "$HOME/downloads/get-pip.py" ]; then rm -f "$HOME/downloads/get-pip.py"; fi
-    echo "Downloading pip install script"
-    curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py > "$HOME/downloads/get-pip.py"
-    echoResult $?
-else
-    exitMsg "Directory '$HOME/downloads' not found"
 fi
 ####################################################################
 # INSTALL PYTHON MODULES
 ####################################################################
-# pip
-if [ -f "$HOME/downloads/get-pip.py" ]; then
-    echo "Installing pip"
-    python3 "$HOME/downloads/get-pip.py"
-    echoResult $?
-fi
-# pipx
-echo "Installing pipx"
-sudo apt -qq -y install pipx
-echoResult $?
 # GitPython
 echo "Installing GitPython"
 yes | pip install GitPython
