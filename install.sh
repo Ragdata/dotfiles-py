@@ -86,6 +86,8 @@ if [ ! -d "$HOME/.local/dotfiles-py" ]; then
     echo "Cloning Repository"
     git clone https://github.com/Ragdata/dotfiles-py.git "$HOME/.local/dotfiles-py"
     echoResult $?
+else
+    git pull
 fi
 ####################################################################
 # CREATE XDG DIRECTORIES
