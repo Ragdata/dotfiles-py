@@ -157,6 +157,6 @@ echoResult $?
 ####################################################################
 # INSTALL DOTFILES_PY
 ####################################################################
-cd "$HOME/.local/dotfiles-py/dotfiles_py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py/dotfiles_py'"
+cd "$HOME/.local/dotfiles-py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py'"
 pip install -e .
 echoResult $?
