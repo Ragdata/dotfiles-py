@@ -44,6 +44,21 @@ You can install my `dotfiles` with a single command:
 curl -sSL https://raw.githubusercontent.com/Ragdata/dotfiles-py/refs/heads/master/install.sh | bash
 ```
 
+### Option 2: Clone or Fork the Repo
+
+If you want to have a little more control over things, you might want to clone or fork the repo instead:
+
+```bash
+# The destination directory is important
+git clone git@github.com:Ragdata/dotfiles-py.git "$HOME/.local/dotfiles-py"
+```
+
+You can then make your own modifications / configuration changes before installing:
+
+```bash
+source "$HOME/.local/dotfiles-py/install.sh"
+```
+
 [`^ Top`](#top)
 
 ## [Features](#top) ✨
