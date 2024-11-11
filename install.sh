@@ -102,7 +102,7 @@ echoResult $?
 ####################################################################
 if ! di::checkPkg "pythonpy"; then
     echo "Installing / Updating Python3"
-    sudo apt -qq -y install python3 python3-pip pipx pythonpy
+    sudo apt -qq -y install python3-full python3-pip pipx pythonpy
     echoResult $?
 fi
 ####################################################################
@@ -124,9 +124,17 @@ echoResult $?
 echo "Installing gitdb"
 yes | pip install gitdb
 echoResult $?
+# setuptools
+echo "Installing setuptools"
+yes | pip install setuptools
+echoResult $?
 # systemd-python
 echo "Installing systemd-python"
 yes | pip install systemd-python
+echoResult $?
+# wheel
+echo "Installing wheel"
+yes | pip install wheel
 echoResult $?
 # yaspin
 echo "Installing yaspin"
