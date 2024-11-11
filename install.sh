@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 ####################################################################
 # install.sh
 ####################################################################
@@ -71,6 +72,7 @@ sudo apt -y full-upgrade
 [ ! -d "$HOME/.backup" ] && mkdir -p "$HOME/.backup"
 [ ! -d "$HOME/.dotfiles" ] && mkdir -p "$HOME/.dotfiles"
 [ ! -d "$HOME/.local" ] && mkdir -p "$HOME/.local"
+[ ! -d "$HOME/.venv" ] && mkdir -p "$HOME/.venv"
 ####################################################################
 # INSTALL GIT
 ####################################################################
@@ -102,47 +104,59 @@ echoResult $?
 ####################################################################
 if ! di::checkPkg "pythonpy"; then
     echo "Installing / Updating Python3"
-    sudo apt -qq -y install python3-full python3-pip pipx pythonpy
+    sudo apt -qq -y install update-manager python3-full pipx python3-update-manager
     echoResult $?
 fi
+####################################################################
+# LAUNCH VIRTUAL ENVIRONMENT
+####################################################################
+cd "$HOME/.venv" || exitMsg "Could not switch to directory '$HOME/.venv'"
+python3 -m venv --system-site-packages dot
+source "$HOME/.venv/dot/bin/activate"
+####################################################################
+# CONFIGURE PIPX
+####################################################################
+pipx ensurepath
+sudo pipx ensurepath --global
+pipx completions
 ####################################################################
 # INSTALL PYTHON MODULES
 ####################################################################
 # GitPython
 echo "Installing GitPython"
-yes | pip install GitPython
+pipx install GitPython
 echoResult $?
 # PyGithub
 echo "Installing PyGithub"
-yes | pip install PyGithub
+pipx install PyGithub
 echoResult $?
 # dynaconf
 echo "Installing dynaconf"
-yes | pip install dynaconf
+pipx install dynaconf
 echoResult $?
 # gitdb
 echo "Installing gitdb"
-yes | pip install gitdb
+pipx install gitdb
 echoResult $?
 # setuptools
 echo "Installing setuptools"
-yes | pip install setuptools
+pipx install setuptools
 echoResult $?
 # systemd-python
 echo "Installing systemd-python"
-yes | pip install systemd-python
+pipx install systemd-python
 echoResult $?
 # wheel
 echo "Installing wheel"
-yes | pip install wheel
+pipx install wheel
 echoResult $?
 # yaspin
 echo "Installing yaspin"
-yes | pip install yaspin
+pipx install yaspin
 echoResult $?
 ####################################################################
 # INSTALL DOTFILES_PY
 ####################################################################
 cd "$HOME/.local/dotfiles-py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py'"
-pip install -e .
+pipx install -e .
 echoResult $?
