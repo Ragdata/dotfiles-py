@@ -104,7 +104,7 @@ echoResult $?
 ####################################################################
 if ! di::checkPkg "pythonpy"; then
     echo "Installing / Updating Python3"
-    sudo apt -qq -y install update-manager python3-full pipx python3-update-manager
+    sudo apt -qq -y install update-manager python3-full python3-pip pipx python3-update-manager
     echoResult $?
 fi
 ####################################################################
@@ -124,39 +124,39 @@ pipx completions
 ####################################################################
 # GitPython
 echo "Installing GitPython"
-pipx install GitPython
+pip install GitPython
 echoResult $?
 # PyGithub
 echo "Installing PyGithub"
-pipx install PyGithub
+pip install PyGithub
 echoResult $?
 # dynaconf
 echo "Installing dynaconf"
-pipx install dynaconf
+pip install dynaconf
 echoResult $?
 # gitdb
 echo "Installing gitdb"
-pipx install gitdb
+pip install gitdb
 echoResult $?
 # setuptools
 echo "Installing setuptools"
-pipx install setuptools
+pip install setuptools
 echoResult $?
 # systemd-python
 echo "Installing systemd-python"
-pipx install systemd-python
+pip install systemd-python
 echoResult $?
 # wheel
 echo "Installing wheel"
-pipx install wheel
+pip install wheel
 echoResult $?
 # yaspin
 echo "Installing yaspin"
-pipx install yaspin
+pip install yaspin
 echoResult $?
 ####################################################################
 # INSTALL DOTFILES_PY
 ####################################################################
 cd "$HOME/.local/dotfiles-py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py'"
-pipx install -e .
+pip install -e .
 echoResult $?
