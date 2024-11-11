@@ -110,8 +110,8 @@ fi
 ####################################################################
 # LAUNCH VIRTUAL ENVIRONMENT
 ####################################################################
-cd "$HOME/.venv" || exitMsg "Could not switch to directory '$HOME/.venv'"
-python3 -m venv --system-site-packages dot
+echo "Launching virtual environment"
+python3 -m venv --system-site-packages "$HOME/.venv/dot"
 source "$HOME/.venv/dot/bin/activate"
 ####################################################################
 # CONFIGURE PIPX
