@@ -10,7 +10,7 @@ authors = [{name = "Ragdata", email = "ragdata@ragdata.dev"}]
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-keywords = {"dotfiles", "dotfile-management"}
+keywords = ["dotfiles", "dotfile-management"]
 dependencies = [
     "GitPython>=3.1",
     "PyGithub>=2.4",
