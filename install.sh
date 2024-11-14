@@ -24,6 +24,11 @@ clear
 ####################################################################
 export DOT_REPO="$HOME/.local/dotfiles-py"
 export DOT_USER="$HOME/.dotfiles"
+TERM_ESC=$'\033'
+TERM_CSI="${TERM_ESC}["
+RESET=$(printf -- '%s0m' "$TERM_CSI")
+RED=$(printf -- '%s31m' "$TERM_CSI")
+GOLD=$(printf -- '%s33m' "$TERM_CSI")
 ####################################################################
 # FUNCTIONS
 ####################################################################
@@ -31,12 +36,12 @@ echoResult()
 {
     local result="${1:-1}" ok="${2:-OK}" fail="${3:-FAILURE}"
 
-    if [ "$result" -eq 0 ]; then echo "$ok"; else exitMsg "$fail"; fi
+    if [ "$result" -eq 0 ]; then echo -e "${GOLD}$ok${RESET}"; else exitMsg "$fail"; fi
 }
 
 exitMsg()
 {
-    echo "${1:-Unknown Error!}"
+    echo -e "${RED}${1:-Unknown Error!}${RESET}"
     exit "${2:-1}"
 }
 
@@ -52,19 +57,19 @@ di::checkPkg()
 # SETUP PASSWORDLESS SUDO
 ####################################################################
 if [ ! -f "/etc/sudoers.d/$USER" ]; then
-    echo "Enabling passwordless sudo"
+    echo -e "${GOLD}Enabling passwordless sudo${RESET}"
     sudo sh -c "echo \"$USER ALL=(ALL) NOPASSWD:ALL\" > /etc/sudoers.d/$USER"
 fi
 ####################################################################
 # UPDATE & UPGRADE
 ####################################################################
-echo "Install Package Management Tools"
-sudo apt -qq -y install software-properties-common
-echo "Add Python PPA"
+echo -e "${GOLD}Install Package Management Tools${RESET}"
+sudo apt -y install software-properties-common
+echo -e "${GOLD}Add Python PPA${RESET}"
 sudo add-apt-repository ppa:deadsnakes/ppa
-echo "Updating package registry"
-sudo apt -qq -y update
-echo "Upgrading system files"
+echo -e "${GOLD}Updating package registry${RESET}"
+sudo apt -y update
+echo -e "${GOLD}Upgrading system files${RESET}"
 sudo apt -y full-upgrade
 ####################################################################
 # CREATE DIRECTORIES
@@ -77,7 +82,7 @@ sudo apt -y full-upgrade
 # INSTALL GIT
 ####################################################################
 if ! di::checkPkg "git-lfs"; then
-    echo "Installing git"
+    echo -e "${GOLD}Installing git${RESET}"
     sudo apt -qq -y install git git-lfs
     echoResult $?
 fi
@@ -85,7 +90,7 @@ fi
 # CLONE REPO
 ####################################################################
 if [ ! -d "$HOME/.local/dotfiles-py" ]; then
-    echo "Cloning Repository"
+    echo -e "${GOLD}Cloning Repository${RESET}"
     git clone https://github.com/Ragdata/dotfiles-py.git "$HOME/.local/dotfiles-py"
     echoResult $?
 else
@@ -94,7 +99,7 @@ fi
 ####################################################################
 # CREATE XDG DIRECTORIES
 ####################################################################
-echo "Creating XDG Directories"
+echo -e "${GOLD}Creating XDG Directories${RESET}"
 sudo install -v -b -m 0644 -C -D -t "/etc/xdg" "$HOME/.local/dotfiles-py/src/etc/xdg/user-dirs.defaults" \
     || exitMsg "Failed to install user-dirs.defaults"
 xdg-user-dirs-update
@@ -103,60 +108,33 @@ echoResult $?
 # INSTALL PYTHON
 ####################################################################
 if ! di::checkPkg "pythonpy"; then
-    echo "Installing / Updating Python3"
-    sudo apt -qq -y install update-manager python3-full python3-pip pipx python3-update-manager
+    echo -e "${GOLD}Installing / Updating Python3${RESET}"
+    sudo apt -y install update-manager python3-full python3-pip pipx python3-update-manager
     echoResult $?
 fi
 ####################################################################
 # LAUNCH VIRTUAL ENVIRONMENT
 ####################################################################
-echo "Launching virtual environment"
+echo -e "${GOLD}Launching virtual environment${RESET}"
 python3 -m venv --system-site-packages "$HOME/.venv/dot"
 source "$HOME/.venv/dot/bin/activate"
 ####################################################################
 # CONFIGURE PIPX
 ####################################################################
 pipx ensurepath
-sudo pipx ensurepath --global
-pipx completions
+#sudo pipx ensurepath --global
+#pipx completions
 ####################################################################
-# INSTALL PYTHON MODULES
+# INSTALL PYTHON PACKAGES
 ####################################################################
-# GitPython
-echo "Installing GitPython"
-pip install GitPython
-echoResult $?
-# PyGithub
-echo "Installing PyGithub"
-pip install PyGithub
-echoResult $?
-# dynaconf
-echo "Installing dynaconf"
-pip install dynaconf
-echoResult $?
-# gitdb
-echo "Installing gitdb"
-pip install gitdb
-echoResult $?
-# setuptools
-echo "Installing setuptools"
-pip install setuptools
-echoResult $?
-# systemd-python
-echo "Installing systemd-python"
-pip install systemd-python
-echoResult $?
-# wheel
-echo "Installing wheel"
-pip install wheel
-echoResult $?
-# yaspin
-echo "Installing yaspin"
-pip install yaspin
+echo -e "${GOLD}Installing Python Packages${RESET}"
+pip install GitPython PyGithub dynaconf gitdb setuptools systemd-python wheel yaspin
 echoResult $?
 ####################################################################
 # INSTALL DOTFILES_PY
 ####################################################################
+echo -e "${GOLD}Installing dotfiles-py${RESET}"
 cd "$HOME/.local/dotfiles-py" || exitMsg "Couldn't change to directory '$HOME/.local/dotfiles-py'"
 pip install -e .
+cd - || exitMsg "Couldn't return to previous directory"
 echoResult $?
