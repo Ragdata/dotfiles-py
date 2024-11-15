@@ -14,8 +14,10 @@ keywords = ["dotfiles", "dotfile-management"]
 dependencies = [
     "GitPython>=3.1",
     "PyGithub>=2.4",
+    "PyYAML>=6.0",
     "dynaconf>=3.2",
     "gitdb>=4.0",
+    "typer>=0.13",
     "yaspin>=3.1"
 ]
 classifiers = [
@@ -35,7 +37,17 @@ Repository = "https://github.com/Ragdata/dotfiles-py"
 #Issues = ""
 #Changelog = ""
 
-#[project.scripts]
+[project.scripts]
+subtree = "dotfiles_py.subtree:cli"
 
 [project.optional-dependencies]
 tests = ["pytest>=8.3"]
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+addopts = [
+    "-ra -q",
+    "--import-mode=importlib"
+]
+pythonpath = "dotfiles_py"
+testpaths = ["tests"]

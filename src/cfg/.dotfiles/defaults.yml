@@ -1,0 +1,6 @@
+dir:
+    home: "@format {env[HOME]}"
+    repo: "@format {this.HOME}/.local/dotfiles-py"
+    user: "@format {this.HOME}/.dotfiles"
+file:
+    subtrees: "@format {this.dir.repo}/.subtrees.yml"
