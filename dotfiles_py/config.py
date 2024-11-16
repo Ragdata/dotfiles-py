@@ -13,39 +13,42 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 # DEPENDENCIES
 ####################################################################
+import os.path
+
 from pathlib import Path
-from typing import Any
 
 from dynaconf import Dynaconf, add_converter
 
-from dotfiles_py import get_config_files, get_settings_files
+from dotfiles_py import get_config_files
 ####################################################################
-# ATTRIBUTES
-####################################################################
-
-####################################################################
-# MODULES
+# MODULE
 ####################################################################
 # Custom Casting Token
 add_converter("path", Path)
 # Find config files
-get_config_files()
+paths = get_config_files()
+# Setup the env_loader
+loaders = ["dynaconf.loaders.env_loader"]
 # Get settings files
-file_list = get_settings_files()
-# Assemble Dynaconf args
-dynaconf_args: dict[str, Any] = {}
-
-if "dotenv" in globals():
-    dynaconf_args["load_dotenv"] = True
-    dynaconf_args["dotenv_path"] = str(globals()["dotenv"])
-
-if len(file_list) == 1:
-    dynaconf_args["settings_file"] = file_list[0]
-elif len(file_list) > 1:
-    dynaconf_args["settings_files"] = file_list
+files: list = []
+for p in paths:
+    if os.path.basename(p) == ".env":
+        os.environ["LOAD_DOTENV_FOR_DYNACONF"] = "@bool true"
+        os.environ["DOTENV_PATH_FOR_DYNACONF"] = str(p)
+    else:
+        files.append(str(p))
+if len(files) == 1:
+    os.environ["SETTINGS_FILE_FOR_DYNACONF"] = files[0]
+elif len(files) > 1:
+    os.environ["SETTINGS_FILES_FOR_DYNACONF"] = files
 else:
     raise ValueError("No settings files found")
 
-dynaconf_args["root_path"] = str(Path.home())
+# dynaconf_args["root_path"] = str(Path.home())
 
-settings = Dynaconf( dynaconf_args )
+settings = Dynaconf(
+    LOADERS_FOR_DYNACONF=loaders,
+    ROOT_PATH_FOR_DYNACONF=Path.home()
+)
+
+settings.configure()
