@@ -119,17 +119,26 @@ class Subtree(object):
     def __init__(self, filepath: str | Path) -> None:
         if isinstance(filepath, str):
             filepath = Path(filepath)
+
         self._treefile = filepath
-        self._load(self._treefile)
+
+        data = self._load()
+
+        self._store = SubtreeStore(data)
 
     def __init__(self) -> None:
         if not isinstance(config, Dynaconf):
             raise TypeError("Config object not available")
+
         self._treefile = Path(config.get("file.subtrees"))
+
         if not self._treefile.exists():
             self._treefile.touch(mode=0o644)
+            data = {}
         else:
-            self._load(self._treefile)
+            data = self._load()
+
+        self._store = SubtreeStore(data)
 
     def _erase(self):
         pass
@@ -140,11 +149,8 @@ class Subtree(object):
     def _keys(self):
         return self._store.keys()
 
-    def _load(self, filepath: Path):
-        if not filepath.exists():
-            raise FileNotFoundError(f"File '{str(filepath)}' not found!")
-        yaml = YAML(typ='safe').load(filepath)
-        self._store = SubtreeStore(yaml)
+    def _load(self) -> Any:
+        return YAML(typ='safe').load(self._treefile)
 
     def _run(self, cmd: str, **kwargs):
         return subprocess.run(cmd, cwd=config.get("dir.repo"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
