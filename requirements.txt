@@ -4,4 +4,3 @@ dynaconf ~= 3.2
 python-box[all] ~= 7.0
 shellingham == 1.4.0
 typer ~= 0.13
-yaspin ~= 3.1

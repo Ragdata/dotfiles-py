@@ -20,8 +20,7 @@ dependencies = [
     # "gitdb~=4.0",
     "python-box[all]~=7.0",
     "shellingham==1.4.0",
-    "typer~=0.13",
-    "yaspin~=3.1"
+    "typer~=0.13"
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
