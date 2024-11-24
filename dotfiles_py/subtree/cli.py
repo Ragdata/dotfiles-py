@@ -32,13 +32,13 @@ from dotfiles_py.subtree.models import Subtree
 app = typer.Typer(rich_markup_mode="rich", context_settings={'help_option_names': ['-h', '--help']}, no_args_is_help=True)
 
 @app.callback(invoke_without_command=True)
-def callback(version: bool = typer.Option(False, '-V', '--version', help="Display the module version and exit", is_eager=True)) -> None:
+def callback(version: bool = typer.Option(False, '-V', '--version', help="Display the submodule version and exit", is_eager=True)) -> None:
     """
     [yellow]Dotfiles-PY[/yellow] :: Git Subtrees Submodule
     """
     if version:
         print(f"{__app_name__.capitalize()} [yellow]v{__app_version__}[/yellow]")
-        raise typer.Exit()
+        raise typer.Exit(1)
 
 @app.command()
 def add(label: str, path: str, url: str,
@@ -51,7 +51,7 @@ def add(label: str, path: str, url: str,
     return sys.exit(0)
 
 @app.command('fetch')
-def fetch() -> int:
+def fetch(label: str) -> int:
     """Perform a `git fetch` for the named subtree"""
     return sys.exit(0)
 
@@ -62,15 +62,16 @@ def show() -> int:
     return sys.exit(0)
 
 @app.command('pull')
-def pull() -> int:
+def pull(label: str) -> int:
     """Perform a `git pull` for the named subtree"""
     return sys.exit(0)
 
 @app.command('remove')
-def remove() -> int:
+def remove(label: str) -> int:
     """Remove the named subtree from the current repository"""
     return sys.exit(0)
 
 @app.command('version')
 def module_version() -> None:
+    """Display the submodule version and exit"""
     callback(True)
