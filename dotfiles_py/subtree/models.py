@@ -33,71 +33,72 @@ __all__ = ["SubtreeStore", "Subtree"]
 ####################################################################
 # MODULES
 ####################################################################
-@dataclass(eq=False, order=False, match_args=False, kw_only=True)
-class SubtreeItem:
 
-    label:  str  = None
-    path:   Path = None
-    url:    str  = None
-    branch: str  = None
+# @dataclass(eq=False, order=False, match_args=False, kw_only=True)
+# class SubtreeItem:
 
-    @overload
-    def __init__(self) -> None:
-        pass
-    @overload
-    def __init__(self, data: dict) -> None:
-        if not isinstance(data, dict):
-            raise ValueError("'data' must be of type `dict`")
-        self.fmDict(data)
-    @overload
-    def __init__(self, label: str = None, path: Path | str = None, url: str = None, branch: str = None) -> None:
-        self.label = label
-        self.url = url
-        self.branch = branch
-        if isinstance(path, Path):
-            self.path = path
-        elif isinstance(path, str):
-            self.path = Path(path)
-        else:
-            raise ValueError("Value of 'path' must be of type `str` or `Path`")
+#     label:  str  = None
+#     path:   Path = None
+#     url:    str  = None
+#     branch: str  = None
 
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(label={self.label!r}, path={str(self.path)!r}, url={self.url!r}, branch={self.branch!r})"
+#     @overload
+#     def __init__(self) -> None:
+#         pass
+#     @overload
+#     def __init__(self, data: dict) -> None:
+#         if not isinstance(data, dict):
+#             raise ValueError("'data' must be of type `dict`")
+#         self.fmDict(data)
+#     @overload
+#     def __init__(self, label: str = None, path: Path | str = None, url: str = None, branch: str = None) -> None:
+#         self.label = label
+#         self.url = url
+#         self.branch = branch
+#         if isinstance(path, Path):
+#             self.path = path
+#         elif isinstance(path, str):
+#             self.path = Path(path)
+#         else:
+#             raise ValueError("Value of 'path' must be of type `str` or `Path`")
 
-    def __str__(self) -> str:
-        return f"{self.label}(path={str(self.path)}, url={self.url}, branch={self.branch})"
+#     def __repr__(self) -> str:
+#         return f"{self.__class__.__name__}(label={self.label!r}, path={str(self.path)!r}, url={self.url!r}, branch={self.branch!r})"
 
-    def fmDict(self, data: dict):
-        if len(data) == 0:
-            raise ValueError("Data structure is empty")
-        if len(data) == 1:
-            for k in data.keys(): self.label = k
-            for k, v in data.values():
-                if k == "path":
-                    if isinstance(v, Path):
-                        self[k] = v
-                    if isinstance(v, str):
-                        self[k] = Path(k)
-                else:
-                    self[k] = v
-        if len(data) > 1:
-            for k, v in data:
-                if k == "path":
-                    if isinstance(v, Path):
-                        self[k] = v
-                    if isinstance(v, str):
-                        self[k] = Path(k)
-                else:
-                    self[k] = v
+#     def __str__(self) -> str:
+#         return f"{self.label}(path={str(self.path)}, url={self.url}, branch={self.branch})"
 
-    def toDict(self):
-        return {self.label: {"path": str(self.path), "url": self.url, "branch": self.branch}}
+#     def fmDict(self, data: dict):
+#         if len(data) == 0:
+#             raise ValueError("Data structure is empty")
+#         if len(data) == 1:
+#             for k in data.keys(): self.label = k
+#             for k, v in data.values():
+#                 if k == "path":
+#                     if isinstance(v, Path):
+#                         self[k] = v
+#                     if isinstance(v, str):
+#                         self[k] = Path(k)
+#                 else:
+#                     self[k] = v
+#         if len(data) > 1:
+#             for k, v in data:
+#                 if k == "path":
+#                     if isinstance(v, Path):
+#                         self[k] = v
+#                     if isinstance(v, str):
+#                         self[k] = Path(k)
+#                 else:
+#                     self[k] = v
 
-    def toJson(self, path: str):
-        return json.dumps(self.toDict(), indent=4)
+#     def toDict(self):
+#         return {self.label: {"path": str(self.path), "url": self.url, "branch": self.branch}}
 
-    def toYaml(self, path: str):
-        return yaml.dump(self.toDict(), indent=4)
+#     def toJson(self, path: str):
+#         return json.dumps(self.toDict(), indent=4)
+
+#     def toYaml(self, path: str):
+#         return yaml.dump(self.toDict(), indent=4)
 
 @dataclass(eq=False, order=False, match_args=False, kw_only=True)
 class SubtreeStore(Box):
