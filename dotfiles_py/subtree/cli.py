@@ -26,7 +26,7 @@ from dotfiles_py.subtree import models
 ####################################################################
 # MODULES
 ####################################################################
-app = typer.Typer(invoke_without_command=True)
+app = typer.Typer(invoke_without_command=True, rich_markup_mode="rich")
 
 @app.callback()
 def callback():
