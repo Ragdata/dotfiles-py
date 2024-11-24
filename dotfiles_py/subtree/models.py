@@ -23,6 +23,7 @@ from dynaconf import Dynaconf
 from pathlib import Path
 from ruamel.yaml import YAML
 from typing import Any, overload
+from collections.abc import Mapping
 from rich import print
 
 from dotfiles_py.config import settings as config
@@ -104,11 +105,11 @@ __all__ = ["SubtreeStore", "Subtree"]
 class SubtreeStore(Box):
 
     @overload
+    def __init__(self, obj: Mapping[Any, Any]) -> None:
+        super().__init__(obj, box_dots=True)
+
     def __init__(self) -> None:
         super().__init__(box_dots=True)
-    @overload
-    def __init__(self, obj: dict) -> None:
-        super().__init__(obj)
 
 class Subtree(object):
 
