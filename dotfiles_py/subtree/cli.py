@@ -26,9 +26,9 @@ from dotfiles_py.subtree import models
 ####################################################################
 # MODULES
 ####################################################################
-app = typer.Typer(invoke_without_command=True, rich_markup_mode="rich")
+app = typer.Typer(rich_markup_mode="rich")
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def callback():
     """
     [yellow]Dotfiles-PY[/yellow] :: Git Subtrees Submodule
