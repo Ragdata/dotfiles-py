@@ -37,11 +37,11 @@ def callback():
 @app.command()
 def add(
     label: str,
-    path: str | Path,
+    path: str,
     url: str,
     branch: Annotated[Optional[str], typer.Option()] = "master",
     squash: Annotated[Optional[bool], typer.Option()] = True,
-    message: Annotated[Optional[str], typer.Option()] = ""
+    message: Annotated[Optional[str], typer.Option()] = None
 ):
     """Add a subtree to the current repository"""
     models.Subtree().add(label, path, url, branch, squash, message)

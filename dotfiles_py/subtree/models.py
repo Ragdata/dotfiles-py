@@ -153,7 +153,7 @@ class Subtree(object):
     def _keys(self):
         return self._store.keys()
 
-    def _load(self) -> Any:
+    def _load(self):
         return YAML(typ='safe').load(self._treefile)
 
     def _run(self, cmd: str, **kwargs):
