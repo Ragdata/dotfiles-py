@@ -12,13 +12,16 @@ requires-python = ">=3.10"
 license = {file = "LICENSE"}
 keywords = ["dotfiles", "dotfile-management"]
 dependencies = [
-    "GitPython>=3.1",
-    "PyGithub>=2.4",
-    "PyYAML>=6.0",
-    "dynaconf>=3.2",
-    "gitdb>=4.0",
-    "typer>=0.13",
-    "yaspin>=3.1"
+    # "GitPython~=3.1",
+    "PyGithub~=2.4",
+    # "PyYAML~=6.0",
+    "colorama==0.4.4",
+    "dynaconf~=3.2",
+    # "gitdb~=4.0",
+    "python-box[all]~=7.0",
+    "shellingham==1.4.0",
+    "typer~=0.13",
+    "yaspin~=3.1"
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -27,6 +30,9 @@ classifiers = [
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Unix Shell"
 ]
 
@@ -38,10 +44,11 @@ Repository = "https://github.com/Ragdata/dotfiles-py"
 #Changelog = ""
 
 [project.scripts]
-subtree = "dotfiles_py.subtree:cli"
+subtree = "dotfiles_py.subtree.cli:app"
 
 [project.optional-dependencies]
-tests = ["pytest>=8.3"]
+docs = ["mkdocs~=1.6", "termynal~=0.12", "mkdocs-material~=9.5"]
+tests = ["pytest~=8.3"]
 
 [tool.pytest.ini_options]
 minversion = "8.3"

@@ -1,0 +1,14 @@
+# self
+-e .
+
+# dependencies
+PyGithub ~= 2.4
+colorama == 0.4.4
+dynaconf ~= 3.2
+python-box[all] ~= 7.0
+shellingham == 1.4.0
+typer ~= 0.13
+yaspin ~= 3.1
+
+# tests
+pytest ~= 8.3

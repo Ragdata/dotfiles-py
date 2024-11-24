@@ -29,4 +29,26 @@ def version(*names, **kwargs):
         content = f.read().strip()
     return content
 
-setup(version=version("dotfiles_py", "VERSION"))
+setup(
+    name="dotfiles-py",
+    version=version("dotfiles_py", "VERSION"),
+    py_modules=["dotfiles_py"],
+    packages=["dotfiles_py"],
+    extras_require={
+        "all": [
+            "PyGithub~=2.4",
+            "colorama==0.4.4",
+            "dynaconf~=3.2",
+            "python-box[all]~=7.0",
+            "shellingham==1.4.0",
+            "typer~=0.13",
+            "yaspin~=3.1",
+            "mkdocs~=1.6",
+            "termynal~=0.12",
+            "mkdocs-material~=9.5",
+            "pytest~=8.3"
+        ],
+        "docs": ["mkdocs~=1.6", "termynal~=0.12", "mkdocs-material~=9.5"],
+        "tests": ["pytest~=8.3"]
+    }
+)
