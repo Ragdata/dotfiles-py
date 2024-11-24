@@ -15,7 +15,8 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 import typer
 
-from typing import Annotated
+from typing import Annotated, Optional
+from pathlib import Path
 
 from dotfiles_py.subtree import models
 ####################################################################
@@ -27,15 +28,23 @@ from dotfiles_py.subtree import models
 ####################################################################
 app = typer.Typer()
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def callback():
     """
     Dotfiles-PY :: Git Subtrees Submodule
     """
 
 @app.command()
-def add():
+def add(
+    label: str,
+    path: str | Path,
+    url: str,
+    branch: Annotated[Optional[str], typer.Option()] = "master",
+    squash: Annotated[Optional[bool], typer.Option()] = True,
+    message: Annotated[Optional[str], typer.Option()] = ""
+):
     """Add a subtree to the current repository"""
+    models.Subtree().add(label, path, url, branch, squash, message)
 
 @app.command()
 def fetch():
