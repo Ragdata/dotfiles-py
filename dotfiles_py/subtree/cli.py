@@ -13,12 +13,15 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 # DEPENDENCIES
 ####################################################################
+import sys
 import typer
 
+from rich import print
 from typing import Annotated, Optional
-from pathlib import Path
 
-from dotfiles_py.subtree import models
+
+from dotfiles_py.subtree import __app_name__, __app_version__
+from dotfiles_py.subtree.models import Subtree
 ####################################################################
 # ATTRIBUTES
 ####################################################################
@@ -26,39 +29,48 @@ from dotfiles_py.subtree import models
 ####################################################################
 # MODULES
 ####################################################################
-app = typer.Typer(rich_markup_mode="rich")
+app = typer.Typer(rich_markup_mode="rich", context_settings={'help_option_names': ['-h', '--help']}, no_args_is_help=True)
 
 @app.callback(invoke_without_command=True)
-def callback():
+def callback(version: Annotated[Optional[bool], typer.Option(False, '-V', '--version', help="Display the module version and exit", is_eager=True)]):
     """
     [yellow]Dotfiles-PY[/yellow] :: Git Subtrees Submodule
     """
+    if version:
+        print(f"{__app_name__.capitalize()} [yellow]v{__app_version__}[/yellow]")
+        raise typer.Exit()
 
 @app.command()
-def add(
-    label: str,
-    path: str,
-    url: str,
+def add(label: str, path: str, url: str,
     branch: Annotated[Optional[str], typer.Option()] = "master",
     squash: Annotated[Optional[bool], typer.Option()] = True,
     message: Annotated[Optional[str], typer.Option()] = None
-):
+) -> int:
     """Add a subtree to the current repository"""
-    models.Subtree().add(label, path, url, branch, squash, message)
+    Subtree().add(label, path, url, branch, squash, message)
+    return sys.exit(0)
 
-@app.command()
-def fetch():
+@app.command('fetch')
+def fetch() -> int:
     """Perform a `git fetch` for the named subtree"""
+    return sys.exit(0)
 
-@app.command(name='list')
-def show():
+@app.command('list')
+def show() -> int:
     """List all currently installed subtrees"""
-    models.Subtree().show()
+    Subtree().show()
+    return sys.exit(0)
 
-@app.command()
-def pull():
+@app.command('pull')
+def pull() -> int:
     """Perform a `git pull` for the named subtree"""
+    return sys.exit(0)
 
-@app.command()
-def remove():
+@app.command('remove')
+def remove() -> int:
     """Remove the named subtree from the current repository"""
+    return sys.exit(0)
+
+@app.command('version')
+def module_version() -> None:
+    callback(True)
