@@ -30,7 +30,7 @@ app = typer.Typer()
 @app.callback()
 def callback():
     """
-    Git Subtrees CLI Python App
+    Dotfiles-PY :: Git Subtrees Submodule
     """
 
 @app.command()
@@ -43,7 +43,7 @@ def fetch():
 
 @app.command(name='list')
 def show():
-    """List all currently installed Subtrees"""
+    """List all currently installed subtrees"""
     models.Subtree().show()
 
 @app.command()
