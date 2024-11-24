@@ -21,6 +21,8 @@ from pathlib import Path
 # ATTRIBUTES
 ####################################################################
 #__all__ = ["HOME","CFG_FILES","CFG_DIRS","get_config_files","get_settings_files","settings"]
+__pkg_name__ = "dotfiles_py"
+__pkg_version__ = "0.1.0"
 ####################################################################
 # VARS
 ####################################################################

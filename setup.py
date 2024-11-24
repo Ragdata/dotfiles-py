@@ -16,6 +16,7 @@ copyright:      Copyright © 2024 Redeyed Technologies
 import os
 
 from setuptools import setup
+from dotfiles_py import __pkg_version__
 ####################################################################
 # ATTRIBUTES
 ####################################################################
@@ -23,15 +24,9 @@ from setuptools import setup
 ####################################################################
 # MODULES
 ####################################################################
-def version(*names, **kwargs):
-    content = ""
-    with open(os.path.join(os.path.dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")) as f:
-        content = f.read().strip()
-    return content
-
 setup(
     name="dotfiles-py",
-    version=version("dotfiles_py", "VERSION"),
+    version=__pkg_version__,
     py_modules=["dotfiles_py"],
     packages=["dotfiles_py"],
     extras_require={
