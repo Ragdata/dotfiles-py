@@ -1,7 +1,7 @@
 dir:
     home: "@format {env[HOME]}"
-    repo: "@format {dir.home}/.local/dotfiles-py"
-    user: "@format {dir.home}/.dotfiles"
+    repo: "@format {this.dir.home}/.local/dotfiles-py"
+    user: "@format {this.dir.home}/.dotfiles"
 file:
-    subtrees: "@format {dir.repo}/.subtrees.yml"
+    subtrees: "@format {this.dir.repo}/.subtrees.yml"
 
