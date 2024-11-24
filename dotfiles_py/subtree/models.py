@@ -13,10 +13,6 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 # DEPENDENCIES
 ####################################################################
-import json
-import shlex
-import subprocess
-
 from box import Box
 from dataclasses import dataclass
 from dynaconf import Dynaconf
@@ -24,6 +20,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 from typing import Any, overload
 from collections.abc import Mapping
+from subprocess import run as exec_, PIPE, CompletedProcess
 from rich import print
 
 from dotfiles_py.config import settings as config
@@ -144,8 +141,8 @@ class Subtree(object):
         else:
             self._store = SubtreeStore()
 
-    def _erase(self):
-        pass
+    # def _erase(self):
+    #     pass
 
     def _items(self):
         return self._store.items()
@@ -154,10 +151,12 @@ class Subtree(object):
         return self._store.keys()
 
     def _load(self):
+        """Load YAML data from treefile"""
         return YAML(typ='safe').load(self._treefile)
 
-    def _run(self, cmd: str, **kwargs):
-        return subprocess.run(cmd, cwd=config.get("dir.repo"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    def _run(self, cmd: str, **kwargs) -> CompletedProcess[bytes]:
+        """Execute command using subprocess"""
+        return exec_(cmd, cwd=config.get("dir.repo"), stdout=PIPE, stderr=PIPE, check=True)
 
     def _values(self):
         return self._store.values()
@@ -166,7 +165,7 @@ class Subtree(object):
         YAML.dump(self._store.to_dict(), self._treefile)
 
     def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None):
-
+        """Add a subtree to the current repository"""
         if self._store.contains(label):
             raise ValueError(f"Subtree '{label}' already exists")
         if self._store.contains(path):
@@ -174,36 +173,64 @@ class Subtree(object):
 
         self._run(f"git remote add -f '{label}' '{url}'")
 
-        if not squash:
-            self._run(f"git subtree add --prefix '{path}' '{label}' '{branch}'")
-        else:
-            self._run(f"git subtree add --prefix '{path}' '{label}' '{branch}' --squash")
+        suffix = ""
+        if squash:
+            suffix = " --squash"
+
+        self._run(f"git subtree add --prefix '{path}' '{label}' '{branch}'{suffix}")
 
         self._store[label] = {'path': path, 'url': url, 'branch': branch}
 
         self._write()
 
     def fetch(self, label: str):
-
+        """Perform a `git fetch` for the named subtree"""
         if not self._store.contains(label):
             raise ValueError(f"Subtree '{label}' not found")
         branch = self._store.get(label.join(['.branch']))
         self._run(f"git fetch '{label}' '{branch}'")
 
-    def merge(self):
-        pass
+    # def merge(self):
+    #     pass
 
-    def pull(self, label: str):
-        pass
+    def pull(self, label: str, squash: bool = True):
+        """Perform a `git pull` for the named subtree"""
+        if not self._store.contains(label):
+            raise ValueError(f"Subtree '{label}' not found")
+        path = self._store.get(label.join(['.path']))
+        branch = self._store.get(label.join(['.branch']))
+        suffix = ""
+        if squash:
+            suffix = " --squash"
+
+        self._run(f"git subtree pull --prefix '{path}' '{label}' '{branch}'{suffix}")
 
     def remove(self, label: str):
-        pass
+        """Delete specified subtree"""
+        if not self._store.contains(label):
+            raise ValueError(f"Subtree '{label}' not found")
+        path = self._store.get(label.join(['.path']))
+        url = self._store.get(label.join(['.url']))
+        branch = self._store.get(label.join(['.branch']))
+
+        root_path = Path(config.get('dir.repo'))
+        tree_path = root_path.joinpath(path)
+
+        if not tree_path.exists():
+            raise FileNotFoundError(f"Directory '{str(tree_path)}' not found")
+
+        self._run(f"git remote remove '{label}'")
+        self._run(f"git rm -r '{str(tree_path)}'")
+
+        del self._store[label]
+
 
     def show(self):
+        """List all currently installed subtrees"""
         print(self._store.to_yaml())
 
-    def split(self):
-        pass
+    # def split(self):
+    #     pass
 
 
 
