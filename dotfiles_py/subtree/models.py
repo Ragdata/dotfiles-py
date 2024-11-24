@@ -135,10 +135,14 @@ class Subtree(object):
 
         if not self._treefile.exists():
             self._treefile.touch(mode=0o644)
-            self._store = SubtreeStore()
+            data = None
         else:
             data = self._load()
+
+        if data:
             self._store = SubtreeStore(data)
+        else:
+            self._store = SubtreeStore()
 
     def _erase(self):
         pass
