@@ -18,10 +18,8 @@ import copy
 import pytest
 
 from pathlib import Path
-from typing import Any
 
 from dynaconf import Dynaconf
-from dynaconf.utils import DynaconfDict
 
 from dotfiles_py import get_config_files
 ####################################################################
