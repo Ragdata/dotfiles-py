@@ -90,7 +90,7 @@ class Subtree(object):
 
     def _run(self, cmd: str, **kwargs) -> CompletedProcess[bytes]:
         """Execute command using subprocess"""
-        return exec_(cmd, cwd=config.get("dir.repo"), stdout=PIPE, stderr=PIPE, check=True)
+        return exec_(cmd, cwd=config.get("dir.repo"), check=True)
 
     def _write(self):
         YAML.dump(self.store.to_dict(), self.treefile)
@@ -108,14 +108,20 @@ class Subtree(object):
                 paths.append(self.store.get(f"{l}.path"))
         if path in paths:
             raise ValueError(f"Subtree already exists at '{path}'")
-
         if squash:
             suffix = " --squash"
 
-        self._run(f"git remote add -f {label} {url}")
-        self._run(f"git subtree add --prefix {path} {label} {branch}{suffix}")
+        cmd = f"git remote add {label} {url}"
+        parts = cmd.split()
+        self._run(parts)
 
-        self.store[label] = {'path': path, 'url': url, 'branch': branch}
+        cmd = f"git subtree add --prefix {path} {label} {branch}{suffix}"
+        parts = cmd.split()
+        self._run(parts)
+
+        self.store[label]['path'] = path
+        self.store[label]['url'] = url
+        self.store[label]['branch'] = branch
 
         self._write()
 
