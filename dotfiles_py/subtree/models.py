@@ -84,6 +84,9 @@ class Subtree(object):
     # def _erase(self):
     #     pass
 
+    def _get_cmd(self, cmdstr: str):
+        return cmdstr.split()
+
     def _load(self) -> dict:
         """Load YAML data from treefile"""
         return YAML(typ='safe').load(self.treefile)
@@ -99,6 +102,7 @@ class Subtree(object):
         """Add a subtree to the current repository"""
         suffix = ""
         paths = []
+
         labels = self.store.keys(False)
 
         if label in labels:
@@ -122,7 +126,7 @@ class Subtree(object):
         self.store[label]['path'] = path
         self.store[label]['url'] = url
         self.store[label]['branch'] = branch
-
+        # rewrite treefile
         self._write()
 
         return True
@@ -149,24 +153,26 @@ class Subtree(object):
 
         self._run(f"git subtree pull --prefix {path} {label} {branch}{suffix}")
 
-    def remove(self, label: str):
+    def remove(self, label: str) -> bool:
         """Delete specified subtree"""
-        if not self.store.contains(label):
-            raise ValueError(f"Subtree '{label}' not found")
-        path = self.store.get(label.join(['.path']))
-        url = self.store.get(label.join(['.url']))
-        branch = self.store.get(label.join(['.branch']))
+        root = config.get('dir.repo')
+        # get subtree labels
+        # labels = self.store.keys(False)
+        # get subtree path
+        path = self.store[label]['path']
+        tree = "/".join([str(root), str(path)])
+        # treepath = Path(tree)
 
-        root_path = Path(config.get('dir.repo'))
-        tree_path = root_path.joinpath(path)
-
-        if not tree_path.exists():
-            raise FileNotFoundError(f"Directory '{str(tree_path)}' not found")
-
-        self._run(f"git remote remove {label}")
-        self._run(f"git rm -r {str(tree_path)}")
-
+        # remove remote
+        self._run(self._get_cmd(f"git remove remote {label}"))
+        # remove files
+        self._run(self._get_cmd(f"git rm -r {tree}"))
+        # remove data
         del self.store[label]
+        # rewrite treefile
+        self._write()
+
+        return True
 
     def show(self):
         """List all currently installed subtrees"""
