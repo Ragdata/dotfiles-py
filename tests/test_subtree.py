@@ -71,9 +71,13 @@ def test_fetch():
 def test_pull():
     pass
 
-def test_remove():
+def test_remove(settings):
 
     result = subtree.remove(label)
 
     assert result == True
+
+result = subtree.remove(label)
+
+assert result == True
 
