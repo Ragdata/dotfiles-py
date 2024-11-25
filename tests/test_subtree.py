@@ -49,7 +49,7 @@ def test_version():
     assert result.exit_code == 0
 
 def test_add(settings):
-
+    """Test cast for Subtree.add()"""
     path = subdata[label]['path']
     url = subdata[label]['url']
     branch = subdata[label]['branch']
@@ -71,9 +71,8 @@ def test_fetch():
 def test_pull():
     pass
 
-def test_remove():
-
+def test_remove(settings):
+    """Test case for Subtree.remove()"""
     result = subtree.remove(label)
 
     assert result == True
-
