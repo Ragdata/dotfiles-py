@@ -44,7 +44,7 @@ class SubtreeStore(Box):
 class Subtree(object):
 
     _store: SubtreeStore
-    _treefile: Path
+    _treefile: Path = Path(config.get('file.subtrees'))
 
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object"""
@@ -52,13 +52,13 @@ class Subtree(object):
             if isinstance(filepath, str):
                 filepath = Path(filepath)
             self.treefile(filepath)
-        else:
-            self.treefile(Path(config.get('file.subtrees')))
+
         if self.treefile.exists():
             data = self._load()
         else:
             self.treefile.touch(mode=0o644)
             data = None
+
         if data is not None:
             self.store(SubtreeStore(data))
         else:
