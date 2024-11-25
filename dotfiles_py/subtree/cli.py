@@ -32,13 +32,15 @@ from dotfiles_py.subtree.models import Subtree
 app = typer.Typer(rich_markup_mode="rich", context_settings={'help_option_names': ['-h', '--help']}, no_args_is_help=True)
 
 @app.callback(invoke_without_command=True)
-def callback(version: bool = typer.Option(False, '-V', '--version', help="Display the submodule version and exit", is_eager=True)) -> None:
+def callback(version: bool = typer.Option(False, '-V', '--version', help="Display the submodule version and exit", is_eager=True)) -> int:
     """
     [yellow]Dotfiles-PY[/yellow] :: Git Subtrees Submodule
     """
     if version:
         print(f"{__app_name__.capitalize()} [yellow]v{__app_version__}[/yellow]")
         raise typer.Exit(1)
+
+    return sys.exit(0)
 
 @app.command()
 def add(label: str, path: str, url: str,
@@ -72,6 +74,6 @@ def remove(label: str) -> int:
     return sys.exit(0)
 
 @app.command('version')
-def module_version() -> None:
+def module_version() -> int:
     """Display the submodule version and exit"""
-    callback(True)
+    return callback(True)
