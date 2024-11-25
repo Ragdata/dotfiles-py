@@ -95,7 +95,7 @@ class Subtree(object):
     def _write(self):
         YAML.dump(self.store.to_dict(), self.treefile)
 
-    def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None):
+    def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None) -> bool:
         """Add a subtree to the current repository"""
         suffix = ""
         paths = []
@@ -112,19 +112,21 @@ class Subtree(object):
         if squash:
             suffix = " --squash"
 
-        self._run(f"git remote add -f '{label}' '{url}'")
-        self._run(f"git subtree add --prefix '{path}' '{label}' '{branch}'{suffix}")
+        self._run(f"git remote add -f {label} {url}")
+        self._run(f"git subtree add --prefix {path} {label} {branch}{suffix}")
 
         self.store[label] = {'path': path, 'url': url, 'branch': branch}
 
         self._write()
+
+        return True
 
     def fetch(self, label: str):
         """Perform a `git fetch` for the named subtree"""
         if not self.store.contains(label):
             raise ValueError(f"Subtree '{label}' not found")
         branch = self.store.get(label.join(['.branch']))
-        self._run(f"git fetch '{label}' '{branch}'")
+        self._run(f"git fetch {label} {branch}")
 
     # def merge(self):
     #     pass
@@ -139,7 +141,7 @@ class Subtree(object):
         if squash:
             suffix = " --squash"
 
-        self._run(f"git subtree pull --prefix '{path}' '{label}' '{branch}'{suffix}")
+        self._run(f"git subtree pull --prefix {path} {label} {branch}{suffix}")
 
     def remove(self, label: str):
         """Delete specified subtree"""
@@ -155,8 +157,8 @@ class Subtree(object):
         if not tree_path.exists():
             raise FileNotFoundError(f"Directory '{str(tree_path)}' not found")
 
-        self._run(f"git remote remove '{label}'")
-        self._run(f"git rm -r '{str(tree_path)}'")
+        self._run(f"git remote remove {label}")
+        self._run(f"git rm -r {str(tree_path)}")
 
         del self.store[label]
 
