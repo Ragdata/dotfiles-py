@@ -43,7 +43,7 @@ class SubtreeStore(Box):
 
 class Subtree(object):
 
-    _store: SubtreeStore
+    _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
     def __init__(self, filepath: str | Path = None) -> None:
@@ -57,17 +57,14 @@ class Subtree(object):
             data = None
 
         if data is not None:
-            self.store(SubtreeStore(data))
+            self.store = SubtreeStore(data)
         else:
-            self.store(SubtreeStore)
+            self.store = SubtreeStore()
 
     @property
     def treefile(self) -> Union[Path, None]:
         """Getter for self._treefile"""
-        if isinstance(self._treefile, Path):
-            return self._treefile
-        else:
-            return None
+        return self._treefile
     @treefile.setter
     def treefile(self, filepath: str | Path) -> None:
         """Setter for self._treefile"""
@@ -78,10 +75,7 @@ class Subtree(object):
     @property
     def store(self) -> Union[SubtreeStore, None]:
         """Getter for self._store"""
-        if isinstance(self._store, SubtreeStore):
-            return self._store
-        else:
-            return None
+        return self._store
     @store.setter
     def store(self, obj: SubtreeStore) -> None:
         """Setter for self._store"""
@@ -103,17 +97,22 @@ class Subtree(object):
 
     def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None):
         """Add a subtree to the current repository"""
-        if self.store.contains(label):
-            raise ValueError(f"Subtree '{label}' already exists")
-        if self.store.contains(path):
-            raise ValueError(f"A subtree already exists at '{path}'")
-
-        self._run(f"git remote add -f '{label}' '{url}'")
-
         suffix = ""
+        paths = []
+        labels = self.store.keys(False)
+
+        if label in labels:
+            raise ValueError(f"Subtree '{label}' already exists")
+        if len(labels) > 0:
+            for l in labels:
+                paths.append(self.store.get(f"{l}.path"))
+        if path in paths:
+            raise ValueError(f"Subtree already exists at '{path}'")
+
         if squash:
             suffix = " --squash"
 
+        self._run(f"git remote add -f '{label}' '{url}'")
         self._run(f"git subtree add --prefix '{path}' '{label}' '{branch}'{suffix}")
 
         self.store[label] = {'path': path, 'url': url, 'branch': branch}
