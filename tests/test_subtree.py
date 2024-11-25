@@ -39,7 +39,7 @@ def test_version():
 def test_add(settings):
 
     treepath = settings.get('dir.repo')
-    treepath = treepath.join('tests/data/.subtrees.yml')
+    treepath = "/".join([treepath, 'tests/data/.subtrees.yml'])
     treefile = Path(treepath)
 
     subtree = Subtree(treefile)
