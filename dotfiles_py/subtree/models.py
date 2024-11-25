@@ -101,34 +101,26 @@ __all__ = ["SubtreeStore", "Subtree"]
 @dataclass(eq=False, order=False, match_args=False, kw_only=True)
 class SubtreeStore(Box):
 
-    @overload
-    def __init__(self, obj: Mapping[Any, Any]) -> None:
-        super().__init__(obj, box_dots=True)
+    def __init__(self, data: Any = None) -> None:
 
-    def __init__(self) -> None:
-        super().__init__(box_dots=True)
+        if data:
+            super().__init__(data, box_dots=True)
+        else:
+            super().__init__(box_dots=True)
 
 class Subtree(object):
 
     _store: SubtreeStore
     _treefile: Path
 
-    @overload
-    def __init__(self, filepath: str | Path) -> None:
-        if isinstance(filepath, str):
-            filepath = Path(filepath)
+    def __init__(self, filepath: str | Path = None) -> None:
 
-        self._treefile = filepath
-
-        data = self._load()
-
-        self._store = SubtreeStore(data)
-
-    def __init__(self) -> None:
-        if not isinstance(config, Dynaconf):
-            raise TypeError("Config object not available")
-
-        self._treefile = Path(config.get("file.subtrees"))
+        if filepath:
+            if isinstance(filepath, str):
+                filepath = Path(filepath)
+            self._treefile = filepath
+        else:
+            self._treefile = Path(config.get('file.subtrees'))
 
         if not self._treefile.exists():
             self._treefile.touch(mode=0o644)
