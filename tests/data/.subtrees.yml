@@ -1,4 +1,0 @@
-composure:
-    path: vendor/github.com/erichs/composure
-    url: https://github.com/erichs/composure.git
-    branch: 1.3.1
