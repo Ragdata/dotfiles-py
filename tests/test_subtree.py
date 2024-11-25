@@ -22,7 +22,13 @@ from dotfiles_py.subtree.models import Subtree
 ####################################################################
 # ATTRIBUTES
 ####################################################################
-
+subdata = {
+    "test-repo": {
+        "path": "vendor/github.com/ragdata/test-repo",
+        "url": "https://github.com/ragdata/test-repo.git",
+        "branch": "master"
+    }
+}
 ####################################################################
 # MODULES
 ####################################################################
@@ -42,9 +48,20 @@ def test_add(settings):
     treepath = "/".join([treepath, 'tests/data/.subtrees.yml'])
     treefile = Path(treepath)
 
-    subtree = Subtree(treefile)
+    label = "test-repo"
+    path = subdata.get(f"{label}.path")
+    url = subdata.get(f"{label}.url")
+    branch = subdata.get(f"{label}.branch")
 
+    
+
+    # result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"])
+
+    assert path == subdata.get(f"{label}.path")
+    assert url == subdata.get(f"{label}.url")
+    assert branch == subdata.get(f"{label}.branch")
     assert treefile.exists() == True
+    # assert result.exit_code == 0
 
 
 def test_list():
