@@ -53,7 +53,8 @@ def test_add(settings):
     url = subdata.get(f"{label}.url")
     branch = subdata.get(f"{label}.branch")
 
-    
+    tree = Subtree(treefile)
+    result = tree.add(label, path, url, branch)
 
     # result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"])
 
@@ -61,7 +62,7 @@ def test_add(settings):
     assert url == subdata.get(f"{label}.url")
     assert branch == subdata.get(f"{label}.branch")
     assert treefile.exists() == True
-    # assert result.exit_code == 0
+    assert result == True
 
 
 def test_list():
