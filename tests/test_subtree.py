@@ -49,18 +49,18 @@ def test_add(settings):
     treefile = Path(treepath)
 
     label = "test-repo"
-    path = subdata.get(f"{label}.path")
-    url = subdata.get(f"{label}.url")
-    branch = subdata.get(f"{label}.branch")
+    path = subdata[label]['path']
+    url = subdata[label]['url']
+    branch = subdata[label]['branch']
 
     tree = Subtree(treefile)
     result = tree.add(label, path, url, branch)
 
-    # result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"])
+    
 
-    assert path == subdata.get(f"{label}.path")
-    assert url == subdata.get(f"{label}.url")
-    assert branch == subdata.get(f"{label}.branch")
+    assert path and path == subdata.get(f"{label}.path")
+    assert url and url == subdata.get(f"{label}.url")
+    assert branch and branch == subdata.get(f"{label}.branch")
     assert treefile.exists() == True
     assert result == True
 
