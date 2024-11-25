@@ -31,9 +31,9 @@ HOME = Path.home()
 CFG_FILES: list = [".env", ".secrets.yml", "defaults.py", "defaults.yml", "settings.py", "settings.yml"]
 
 CFG_DIRS: list = [
-    HOME.joinpath(".local/dotfiles-py/src/cfg/.dotfiles"),
-    HOME.joinpath(".dotfiles/cfg/.dotfiles"),
-    HOME.joinpath(".dotfiles/cfg"),
+    Path(f"{str(HOME)}/.local/dotfiles-py/src/cfg/.dotfiles"),
+    Path(f"{str(HOME)}/.dotfiles/cfg/.dotfiles"),
+    Path(f"{str(HOME)}/.dotfiles/cfg")
 ]
 ####################################################################
 # MODULES
@@ -42,9 +42,10 @@ def get_config_files() -> list:
     """Searches configured directories for configuration files"""
     files: list = []
     match: bool = False
-    for pathname in CFG_DIRS:
-        for filename in CFG_FILES:
-            p: Path = pathname.joinpath(filename)
+
+    for path in CFG_DIRS:
+        for file in CFG_FILES:
+            p = Path("/".join([str(path), file]))
             if p.exists():
                 files.append(p)
     # check that at least one 'defaults' file is available

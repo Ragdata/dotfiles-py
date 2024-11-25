@@ -48,10 +48,7 @@ class Subtree(object):
 
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object"""
-        if filepath is not None:
-            if isinstance(filepath, str):
-                filepath = Path(filepath)
-            self.treefile(filepath)
+        self.treefile = filepath
 
         if self.treefile.exists():
             data = self._load()
