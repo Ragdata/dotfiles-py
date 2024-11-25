@@ -73,8 +73,6 @@ class Subtree(object):
         """Setter for self._treefile"""
         if isinstance(filepath, str):
             filepath = Path(filepath)
-        if not filepath.exists():
-            raise FileNotFoundError(f"Treefile '{str(filepath)}' not found")
         self._treefile = filepath
 
     @property
