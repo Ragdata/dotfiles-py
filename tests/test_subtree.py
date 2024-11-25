@@ -29,6 +29,12 @@ subdata = {
         "branch": "master"
     }
 }
+home = Path.home()
+label = "test-repo"
+testtree = "tests/data/.subtrees.yml"
+tree = "/".join([home, testtree])
+treepath = Path(tree)
+subtree = Subtree(treepath)
 ####################################################################
 # MODULES
 ####################################################################
@@ -44,26 +50,17 @@ def test_version():
 
 def test_add(settings):
 
-    treepath = settings.get('dir.repo')
-    treepath = "/".join([treepath, 'tests/data/.subtrees.yml'])
-    treefile = Path(treepath)
-
-    label = "test-repo"
     path = subdata[label]['path']
     url = subdata[label]['url']
     branch = subdata[label]['branch']
 
-    tree = Subtree(treefile)
-    result = tree.add(label, path, url, branch)
-
-    
+    result = subtree.add(label, path, url, branch)
 
     assert path and path == subdata.get(f"{label}.path")
     assert url and url == subdata.get(f"{label}.url")
     assert branch and branch == subdata.get(f"{label}.branch")
-    assert treefile.exists() == True
+    assert treepath.exists() == True
     assert result == True
-
 
 def test_list():
     pass
@@ -75,4 +72,8 @@ def test_pull():
     pass
 
 def test_remove():
-    pass
+
+    result = subtree.remove(label)
+
+    assert result == True
+
