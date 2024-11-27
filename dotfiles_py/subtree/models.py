@@ -36,12 +36,12 @@ NoneType = type(None)
 @dataclass(eq=False, order=False, match_args=False, kw_only=True)
 class SubtreeStore(Box):
 
-    def __init__(self, data: dict = None) -> None:
+    def __init__(self, data: dict = None, **kwargs) -> None:
 
         if data:
-            super().__init__(data, box_dots=True)
+            super().__init__(data, box_dots=True, **kwargs)
         else:
-            super().__init__(box_dots=True)
+            super().__init__(box_dots=True, **kwargs)
 
 class Subtree(object):
 
