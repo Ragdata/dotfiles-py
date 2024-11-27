@@ -32,6 +32,7 @@ setup(
     extras_require={
         "all": [
             "dynaconf~=3.2",
+            "multipledispatch~=1",
             "python-box[all]~=7.0",
             "shellingham==1.4.0",
             "typer~=0.13",
