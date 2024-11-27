@@ -18,9 +18,10 @@ from dataclasses import dataclass
 from dynaconf import Dynaconf
 from pathlib import Path
 from ruamel.yaml import YAML
-from typing import overload, Any, Union
+from typing import Union
 #from collections.abc import Mapping
-from subprocess import run as exec_, PIPE, CompletedProcess
+from subprocess import run as exec_, CompletedProcess
+from multipledispatch import dispatch as overload_
 from rich import print
 
 from dotfiles_py.config import settings as config
@@ -46,16 +47,20 @@ class Subtree(object):
     _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
-    @overload
+    @overload_(dict, str | Path | None)
     def __init__(self, data: dict, filepath: str | Path = None) -> None:
-        """Instantiates a new Subtree object"""
+        """Instantiates a new Subtree object from data"""
         if filepath is not None:
             self.treefile = filepath
-        if data:
-            self.store = SubtreeStore(data)
 
+        if not self.treefile.exists():
+            self.treefile.touch(mode=0o644)
+
+        self.store = SubtreeStore(data)
+        
+    @overload_(str | Path | None)
     def __init__(self, filepath: str | Path = None) -> None:
-        """Instantiates a new Subtree object"""
+        """Instantiates a new Subtree object from file"""
         if filepath is not None:
             self.treefile = filepath
 
