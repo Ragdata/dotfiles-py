@@ -51,6 +51,8 @@ class Subtree(object):
     @overload_(dict)
     def __init__(self, data: dict) -> None:
         """Instantiates a new Subtree object from data"""
+        if not self.treefile.exists():
+            self.treefile.touch(mode=0o644)
         self.store = SubtreeStore(data)
 
     @overload_(dict, (str, Path))
@@ -59,6 +61,8 @@ class Subtree(object):
         if isinstance(filepath, str):
             filepath = Path(filepath)
         self.treefile = filepath
+        if not self.treefile.exists():
+            self.treefile.touch(mode=0o644)
         self.store = SubtreeStore(data)
 
     @overload_((str, Path))
