@@ -12,12 +12,7 @@ requires-python = ">=3.10"
 license = {file = "LICENSE"}
 keywords = ["dotfiles", "dotfile-management"]
 dependencies = [
-    # "GitPython~=3.1",
-    "PyGithub~=2.4",
-    # "PyYAML~=6.0",
-    "colorama==0.4.4",
     "dynaconf~=3.2",
-    # "gitdb~=4.0",
     "python-box[all]~=7.0",
     "shellingham==1.4.0",
     "typer~=0.13"
