@@ -16,6 +16,7 @@ copyright:      Copyright © 2024 Redeyed Technologies
 import os
 
 from pathlib import Path
+from dynaconf import Dynaconf
 from typer.testing import CliRunner
 from dotfiles_py.subtree.cli import app
 from dotfiles_py.subtree.models import Subtree
@@ -31,8 +32,8 @@ subdata = {
 }
 home = Path.home()
 label = "test-repo"
-testtree = "tests/data/.subtrees.yml"
-tree = "/".join([home, testtree])
+testtree = ".local/dotfiles-py/tests/data/.subtrees.yml"
+tree = "/".join([str(home), testtree])
 treepath = Path(tree)
 subtree = Subtree(treepath)
 ####################################################################
@@ -48,7 +49,7 @@ def test_version():
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
 
-def test_add(settings):
+def test_add(settings: Dynaconf):
     """Test cast for Subtree.add()"""
     path = subdata[label]['path']
     url = subdata[label]['url']
@@ -71,7 +72,7 @@ def test_fetch():
 def test_pull():
     pass
 
-def test_remove(settings):
+def test_remove(settings: Dynaconf):
     """Test case for Subtree.remove()"""
     result = subtree.remove(label)
 
