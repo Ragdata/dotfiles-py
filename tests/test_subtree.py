@@ -75,8 +75,6 @@ def test_pull():
 
 def test_remove(settings: Dynaconf):
     """Test case for Subtree.remove()"""
-    print(subdata.store.keys())
+    result = subdata.remove(label)
 
-    # result = subtree.remove(label)
-
-    # assert result == True
+    assert result == True

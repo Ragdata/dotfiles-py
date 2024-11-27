@@ -187,11 +187,10 @@ class Subtree(object):
     def remove(self, label: str) -> bool:
         """Delete specified subtree"""
         root = config.get('dir.repo')
-        # get subtree labels
-        # labels = self.store.keys(False)
+        if not label in self.store.keys():
+            return True
         # get subtree path
         path = self.store[f"{label}.path"]
-        # path = self.store[label]['path']
         tree = "/".join([str(root), str(path)])
         # treepath = Path(tree)
 
