@@ -84,9 +84,6 @@ class Subtree(object):
     # def _erase(self):
     #     pass
 
-    def _get_cmd(self, cmdstr: str):
-        return cmdstr.split()
-
     def _load(self) -> dict:
         """Load YAML data from treefile"""
         return YAML(typ='safe').load(self.treefile)
@@ -159,7 +156,8 @@ class Subtree(object):
         # get subtree labels
         # labels = self.store.keys(False)
         # get subtree path
-        path = self.store[label]['path']
+        path = self.store[f"{label}.path"]
+        # path = self.store[label]['path']
         tree = "/".join([str(root), str(path)])
         # treepath = Path(tree)
 
