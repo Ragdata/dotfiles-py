@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from dynaconf import Dynaconf
 from pathlib import Path
 from ruamel.yaml import YAML
-from typing import Any, Union
+from typing import overload, Any, Union
 #from collections.abc import Mapping
 from subprocess import run as exec_, PIPE, CompletedProcess
 from rich import print
@@ -46,9 +46,18 @@ class Subtree(object):
     _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
+    @overload
+    def __init__(self, data: dict, filepath: str | Path = None) -> None:
+        """Instantiates a new Subtree object"""
+        if filepath is not None:
+            self.treefile = filepath
+        if data:
+            self.store = SubtreeStore(data)
+
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object"""
-        self.treefile = filepath
+        if filepath is not None:
+            self.treefile = filepath
 
         if self.treefile.exists():
             data = self._load()
