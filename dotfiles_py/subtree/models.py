@@ -47,7 +47,7 @@ class Subtree(object):
     _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
-    @overload_(dict, str | Path | None)
+    @overload_(dict, (str, Path, None))
     def __init__(self, data: dict, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object from data"""
         if filepath is not None:
@@ -57,8 +57,8 @@ class Subtree(object):
             self.treefile.touch(mode=0o644)
 
         self.store = SubtreeStore(data)
-        
-    @overload_(str | Path | None)
+
+    @overload_((str, Path, None))
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object from file"""
         if filepath is not None:
