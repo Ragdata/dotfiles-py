@@ -23,7 +23,7 @@ from dotfiles_py.subtree.models import Subtree
 ####################################################################
 # ATTRIBUTES
 ####################################################################
-subdata = {
+data = {
     "test-repo": {
         "path": "vendor/github.com/ragdata/test-repo",
         "url": "https://github.com/ragdata/test-repo.git",
@@ -36,6 +36,7 @@ testtree = ".local/dotfiles-py/tests/data/.subtrees.yml"
 tree = "/".join([str(home), testtree])
 treepath = Path(tree)
 subtree = Subtree(treepath)
+subdata = Subtree(data)
 ####################################################################
 # MODULES
 ####################################################################
@@ -74,7 +75,7 @@ def test_pull():
 
 def test_remove(settings: Dynaconf):
     """Test case for Subtree.remove()"""
-    print(subtree.store.items())
+    print(subdata.store.keys())
 
     # result = subtree.remove(label)
 
