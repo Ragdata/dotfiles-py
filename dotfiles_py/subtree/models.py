@@ -29,6 +29,7 @@ from dotfiles_py.config import settings as config
 # ATTRIBUTES
 ####################################################################
 __all__ = ["SubtreeStore", "Subtree"]
+NoneType = type(None)
 ####################################################################
 # MODULES
 ####################################################################
@@ -47,7 +48,7 @@ class Subtree(object):
     _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
-    @overload_(dict, (str, Path, None))
+    @overload_(dict, (str, Path, NoneType))
     def __init__(self, data: dict, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object from data"""
         if filepath is not None:
@@ -58,7 +59,7 @@ class Subtree(object):
 
         self.store = SubtreeStore(data)
 
-    @overload_((str, Path, None))
+    @overload_((str, Path, NoneType))
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object from file"""
         if filepath is not None:
