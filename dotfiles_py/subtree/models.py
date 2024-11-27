@@ -48,18 +48,20 @@ class Subtree(object):
     _store: SubtreeStore | None = None
     _treefile: Path = Path(config.get('file.subtrees'))
 
-    @overload_(dict, (str, Path, NoneType))
-    def __init__(self, data: dict, filepath: str | Path = None) -> None:
+    @overload_(dict)
+    def __init__(self, data: dict) -> None:
         """Instantiates a new Subtree object from data"""
-        if filepath is not None:
-            self.treefile = filepath
-
-        if not self.treefile.exists():
-            self.treefile.touch(mode=0o644)
-
         self.store = SubtreeStore(data)
 
-    @overload_((str, Path, NoneType))
+    @overload_(dict, (str, Path))
+    def __init__(self, data: dict, filepath: str | Path = None) -> None:
+        """Instantiates a new Subtree object from data with filename"""
+        if isinstance(filepath, str):
+            filepath = Path(filepath)
+        self.treefile = filepath
+        self.store = SubtreeStore(data)
+
+    @overload_((str, Path))
     def __init__(self, filepath: str | Path = None) -> None:
         """Instantiates a new Subtree object from file"""
         if filepath is not None:
