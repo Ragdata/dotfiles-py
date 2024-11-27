@@ -27,9 +27,9 @@ from dotfiles_py import HOME, CFG_FILES, CFG_DIRS
 ####################################################################
 def test_settings(settings):
     """`settings` is a fixture defined in conftest.py"""
-    assert HOME == str(Path.home())
+    assert HOME == Path.home()
     assert CFG_FILES[0] == ".env"
-    assert CFG_DIRS[2] == str(Path.home().joinpath(".dotfiles/cfg"))
+    assert CFG_DIRS[2] == Path.joinpath(Path.home(), ".dotfiles/cfg")
     assert settings.PORT == 5000
     assert isinstance(settings.PORT, int)
     assert settings.get("dir.home") == str(Path.home())
