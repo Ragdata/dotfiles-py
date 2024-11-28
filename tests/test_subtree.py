@@ -15,6 +15,8 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 import os
 
+from subprocess import CalledProcessError
+
 from pathlib import Path
 from dynaconf import Dynaconf
 from typer.testing import CliRunner
@@ -52,17 +54,21 @@ def test_version():
 
 def test_add(settings: Dynaconf):
     """Test cast for Subtree.add()"""
-    path = subdata[label]['path']
-    url = subdata[label]['url']
-    branch = subdata[label]['branch']
+    path = data[label]['path']
+    url = data[label]['url']
+    branch = data[label]['branch']
 
-    result = subtree.add(label, path, url, branch)
+    try:
+        result = subtree.add(label, path, url, branch)
 
-    assert path and path == subdata.get(f"{label}.path")
-    assert url and url == subdata.get(f"{label}.url")
-    assert branch and branch == subdata.get(f"{label}.branch")
-    assert treepath.exists() == True
-    assert result == True
+        assert path and path == subdata.get(f"{label}.path")
+        assert url and url == subdata.get(f"{label}.url")
+        assert branch and branch == subdata.get(f"{label}.branch")
+        assert treepath.exists() == True
+        assert result == True
+    except CalledProcessError as err:
+        print(err)
+        assert False
 
 def test_list():
     pass

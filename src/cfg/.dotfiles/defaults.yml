@@ -4,5 +4,3 @@ dir:
     user: "@format {this.dir.home}/.dotfiles"
 file:
     subtrees: "@format {this.dir.repo}/.subtrees.yml"
-
-indent: 4
