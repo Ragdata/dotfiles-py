@@ -73,7 +73,7 @@ def test_fetch():
 def test_pull():
     pass
 
-def test_remove(settings: Dynaconf):
+def test_remove():
     """Test case for Subtree.remove()"""
     result = subdata.remove(label)
 
