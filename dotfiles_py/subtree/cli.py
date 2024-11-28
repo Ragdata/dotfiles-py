@@ -71,6 +71,7 @@ def pull(label: str) -> int:
 @app.command('remove')
 def remove(label: str) -> int:
     """Remove the named subtree from the current repository"""
+    Subtree().remove(label)
     return sys.exit(0)
 
 @app.command('version')
