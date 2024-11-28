@@ -30,6 +30,7 @@ from dotfiles_py.config import settings as config
 ####################################################################
 __all__ = ["SubtreeStore", "Subtree"]
 NoneType = type(None)
+INDENTATION = config.get('yaml.indent')
 ####################################################################
 # MODULES
 ####################################################################
@@ -143,7 +144,9 @@ class Subtree(object):
 
     def _write(self):
         """Write the contents of the store to the designated treefile"""
-        YAML.dump(self.store.to_dict(), self.treefile)
+        yaml = YAML(typ='safe')
+        yaml.indent(mapping=INDENTATION, sequence=INDENTATION, offset=INDENTATION)
+        yaml.dump(self.store.to_dict(), self.treefile)
 
     def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None) -> bool:
         """Add a subtree to the current repository"""
