@@ -1,0 +1,14 @@
+.archive/
+.idea/
+.vscode/
+
+__pycache__/
+*.egg-info/
+
+
+.env
+.venv
+
+*secrets*
+
+!tests/.env

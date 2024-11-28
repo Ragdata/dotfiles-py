@@ -1,0 +1,31 @@
+
+extends: .releaserc.base
+name: Test Repo
+description: This repo exists purely to provide test data for my other repositories
+version: 0.1.0
+# copyright:
+# website:
+repo_url: https://github.com/ragdata/test-repo
+authors:
+    - username: Ragdata
+      first_name: Darren
+      surname: Poulton
+      email: ragdata@users.noreply.github.com
+      location: Brisbane, Australia
+      affiliation: Redeyed Technologies
+#      blog:
+#      twitter:
+# git_user:
+#    name:
+#    email:
+# branch:
+#     prod:
+#     stage:
+#     patch:
+#     release:
+standard:
+   config: .releaserc.types.conventional
+# commit_types:
+# commit_scopes:
+# logged_types:
+# logged_scopes:
