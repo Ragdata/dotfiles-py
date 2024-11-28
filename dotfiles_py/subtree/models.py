@@ -20,7 +20,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 from typing import Union
 #from collections.abc import Mapping
-from subprocess import run as exec_, CompletedProcess
+from subprocess import run as exec_, CompletedProcess, Popen, PIPE
 from multipledispatch import dispatch as overload_
 from rich import print
 
@@ -209,9 +209,18 @@ class Subtree(object):
         path = self.store[f"{label}.path"]
         tree = "/".join([str(root), str(path)])
 
-        remotes = self._run(self._get_cmd(f"git remote -v | grep {label}"), capture_output=True, check=False)
-        print(remotes.stdout)
-        print(remotes.stderr)
+        git_proc = Popen(self._get_cmd(f"git remote -v"), stdout=PIPE, text=True)
+        grep_proc = Popen(self._get_cmd(f"grep {label}"), stdin=git_proc.stdout, stdout=PIPE, text=True)
+        output, error = grep_proc.communicate()
+
+        print(output)
+        print(error)
+
+
+
+        # remotes = self._run(self._get_cmd(f"git remote -v | grep {label}"), capture_output=True, check=False)
+        # print(remotes.stdout)
+        # print(remotes.stderr)
 
 
 
