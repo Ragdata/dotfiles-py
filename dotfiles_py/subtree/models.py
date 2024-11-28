@@ -37,25 +37,11 @@ INDENTATION = config.get('indent')
 @dataclass(eq=False, order=False, match_args=False, kw_only=True)
 class SubtreeStore(Box):
 
-    @overload_(dict)
-    def __init__(self, data: dict, **kwargs):
+    def __init__(self, **kwargs):
 
-        if 'box_dots' in kwargs.keys():
-            kwargs.update({"box_dots": True})
-        else:
-            kwargs["box_dots"] = True
+        kwargs.update({"box_dots": True})
 
-        super(data).__init__(**kwargs)
-
-    @overload_()
-    def __init__(self, *args, **kwargs):
-
-        if 'box_dots' in kwargs.keys():
-            kwargs.update({"box_dots": True})
-        else:
-            kwargs["box_dots"] = True
-
-        super().__init__(*args, **kwargs)
+        super().__init__(**kwargs)
 
 class Subtree(object):
 
@@ -67,7 +53,8 @@ class Subtree(object):
         """Instantiates a new Subtree object from data"""
         if not self.treefile.exists():
             self.treefile.touch(mode=0o644)
-        self.store = SubtreeStore(data)
+        self.store = SubtreeStore()
+        self.store.update(data)
 
     @overload_(dict, (str, Path))
     def __init__(self, data: dict, filepath: str | Path = None) -> None:
@@ -77,7 +64,8 @@ class Subtree(object):
         self.treefile = filepath
         if not self.treefile.exists():
             self.treefile.touch(mode=0o644)
-        self.store = SubtreeStore(data)
+        self.store = SubtreeStore()
+        self.store.update(data)
 
     @overload_((str, Path))
     def __init__(self, filepath: str | Path = None) -> None:
@@ -91,10 +79,10 @@ class Subtree(object):
             self.treefile.touch(mode=0o644)
             data = None
 
+        self.store = SubtreeStore()
+
         if data is not None:
-            self.store = SubtreeStore(data)
-        else:
-            self.store = SubtreeStore()
+            self.store.update(data)
 
     @property
     def treefile(self) -> Union[Path, None]:
