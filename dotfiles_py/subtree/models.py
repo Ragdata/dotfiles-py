@@ -118,15 +118,31 @@ class Subtree(object):
     # def _erase(self):
     #     pass
 
+    @staticmethod
+    def _get_cmd(cmd: str):
+        """Split a command string into usable parts"""
+        return cmd.split()
+
     def _load(self) -> dict:
         """Load YAML data from treefile"""
         return YAML(typ='safe').load(self.treefile)
 
     def _run(self, cmd: str, **kwargs) -> CompletedProcess[bytes]:
         """Execute command using subprocess"""
-        return exec_(cmd, cwd=config.get("dir.repo"), check=True)
+        if 'cwd' in kwargs.keys():
+            kwargs.update({"cwd": config.get("dir.repo")})
+        else:
+            kwargs["cwd"] = config.get("dir.repo")
+        if 'check' in kwargs.keys():
+            ckval = kwargs["check"]
+            kwargs.update({"check": ckval})
+        else:
+            kwargs["check"] = True
+
+        return exec_(cmd, **kwargs)
 
     def _write(self):
+        print(self.store.to_dict())
         YAML.dump(self.store.to_dict(), self.treefile)
 
     def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None) -> bool:
@@ -192,16 +208,21 @@ class Subtree(object):
         # get subtree path
         path = self.store[f"{label}.path"]
         tree = "/".join([str(root), str(path)])
-        # treepath = Path(tree)
 
-        # remove remote
-        self._run(self._get_cmd(f"git remove remote {label}"))
-        # remove files
-        self._run(self._get_cmd(f"git rm -r {tree}"))
-        # remove data
-        del self.store[label]
-        # rewrite treefile
-        self._write()
+        remotes = self._run(self._get_cmd(f"git remote -v | grep {label}"), capture_output=True, check=False)
+        print(remotes.stdout)
+        print(remotes.stderr)
+
+
+
+        # # remove remote
+        # self._run(self._get_cmd(f"git remote remove {label}"))
+        # # remove files
+        # self._run(self._get_cmd(f"git rm -r {tree}"))
+        # # remove data
+        # del self.store[label]
+        # # rewrite treefile
+        # self._write()
 
         return True
 
