@@ -30,7 +30,7 @@ from dotfiles_py.config import settings as config
 ####################################################################
 __all__ = ["SubtreeStore", "Subtree"]
 NoneType = type(None)
-INDENTATION = config.get('yaml.indent')
+INDENTATION = config.get('indent')
 ####################################################################
 # MODULES
 ####################################################################
@@ -38,14 +38,14 @@ INDENTATION = config.get('yaml.indent')
 class SubtreeStore(Box):
 
     @overload_(dict)
-    def __init__(self, data: dict, *args, **kwargs):
+    def __init__(self, data: dict, **kwargs):
 
         if 'box_dots' in kwargs.keys():
             kwargs.update({"box_dots": True})
         else:
             kwargs["box_dots"] = True
 
-        super().__init__(data, *args, **kwargs)
+        super(data).__init__(**kwargs)
 
     @overload_()
     def __init__(self, *args, **kwargs):
