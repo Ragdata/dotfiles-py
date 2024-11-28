@@ -211,12 +211,27 @@ class Subtree(object):
 
         return True
 
+    # def split(self):
+    #     pass
+
+    ################################################################
+
+    def get(self, key: str):
+        """Proxy method for store.get()"""
+        return self.store.get(key)
+
+    def keys(self):
+        """Proxy method for store.keys()"""
+        return self.store.keys()
+
     def show(self):
         """List all currently installed subtrees"""
         print(self.store.to_yaml())
 
-    # def split(self):
-    #     pass
+    def update(self, data: dict):
+        """Update all values contained in data"""
+        return self.store.update(data)
 
-
-
+    def values(self):
+        """Return all values contained in data"""
+        return self.store.values()
