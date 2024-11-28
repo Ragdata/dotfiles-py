@@ -142,7 +142,7 @@ class Subtree(object):
         return exec_(cmd, **kwargs)
 
     def _write(self):
-        print(self.store.to_dict())
+        """Write the contents of the store to the designated treefile"""
         YAML.dump(self.store.to_dict(), self.treefile)
 
     def add(self, label: str, path: str, url: str, branch: str, squash: bool = True, message: str = None) -> bool:
@@ -208,30 +208,15 @@ class Subtree(object):
         # get subtree path
         path = self.store[f"{label}.path"]
         tree = "/".join([str(root), str(path)])
-
-        git_proc = Popen(self._get_cmd(f"git remote -v"), stdout=PIPE, text=True)
-        grep_proc = Popen(self._get_cmd(f"grep {label}"), stdin=git_proc.stdout, stdout=PIPE, text=True)
-        output, error = grep_proc.communicate()
-
-        print(output)
-        print(error)
-
-
-
-        # remotes = self._run(self._get_cmd(f"git remote -v | grep {label}"), capture_output=True, check=False)
-        # print(remotes.stdout)
-        # print(remotes.stderr)
-
-
-
-        # # remove remote
-        # self._run(self._get_cmd(f"git remote remove {label}"))
-        # # remove files
-        # self._run(self._get_cmd(f"git rm -r {tree}"))
-        # # remove data
-        # del self.store[label]
-        # # rewrite treefile
-        # self._write()
+        # remove remote
+        self._run(self._get_cmd(f"git remote remove {label}"), check=False)
+        # remove files
+        self._run(self._get_cmd(f"git rm -r {tree}"), check=False)
+        # remove data
+        if label in self.store.keys():
+            del self.store[label]
+        # rewrite treefile
+        self._write()
 
         return True
 
