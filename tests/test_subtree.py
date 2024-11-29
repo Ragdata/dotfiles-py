@@ -15,8 +15,6 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 import os
 
-from subprocess import CalledProcessError
-
 from pathlib import Path
 from dynaconf import Dynaconf
 from typer.testing import CliRunner
@@ -54,21 +52,18 @@ def test_version():
 
 def test_add(settings: Dynaconf):
     """Test cast for Subtree.add()"""
+    data['label'] = {}
     path = data[label]['path']
     url = data[label]['url']
     branch = data[label]['branch']
 
-    try:
-        result = subtree.add(label, path, url, branch)
+    result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"])
 
-        assert path and path == subdata.get(f"{label}.path")
-        assert url and url == subdata.get(f"{label}.url")
-        assert branch and branch == subdata.get(f"{label}.branch")
-        assert treepath.exists() == True
-        assert result == True
-    except CalledProcessError as err:
-        print(err)
-        assert False
+    assert path and path == subdata.get(f"{label}.path")
+    assert url and url == subdata.get(f"{label}.url")
+    assert branch and branch == subdata.get(f"{label}.branch")
+    assert treepath.exists() == True
+    assert result == True
 
 def test_list():
     pass
@@ -81,6 +76,6 @@ def test_pull():
 
 def test_remove():
     """Test case for Subtree.remove()"""
-    result = subdata.remove(label)
+    result = runner.invoke(app, [f"remove '{label}'"], None, None, False, True)
 
-    assert result == True
+    assert result.exit_code == 0
