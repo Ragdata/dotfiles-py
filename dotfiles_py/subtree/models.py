@@ -13,6 +13,8 @@ copyright:      Copyright © 2024 Redeyed Technologies
 ####################################################################
 # DEPENDENCIES
 ####################################################################
+import sys
+
 from box import Box
 from dataclasses import dataclass
 from dynaconf import Dynaconf
@@ -20,7 +22,8 @@ from pathlib import Path
 from ruamel.yaml import YAML
 from typing import Union
 #from collections.abc import Mapping
-from subprocess import run as exec_, CompletedProcess, Popen, PIPE
+from subprocess import run, CompletedProcess, Popen, PIPE
+from subprocess import CalledProcessError
 from multipledispatch import dispatch as overload_
 from rich import print
 
@@ -37,11 +40,12 @@ INDENTATION = config.get('indent')
 @dataclass(eq=False, order=False, match_args=False, kw_only=True)
 class SubtreeStore(Box):
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
 
-        kwargs.update({"box_dots": True})
+        # kwargs.update({"box_dots": True})
+        kwargs['box_dots'] = True
 
-        super().__init__(**kwargs)
+        super().__init__(*args, **kwargs)
 
 class Subtree(object):
 
@@ -49,7 +53,7 @@ class Subtree(object):
     _treefile: Path = Path(config.get('file.subtrees'))
 
     @overload_(dict)
-    def __init__(self, data: dict) -> None:
+    def __init__(self, data) -> None:
         """Instantiates a new Subtree object from data"""
         if not self.treefile.exists():
             self.treefile.touch(mode=0o644)
@@ -57,7 +61,7 @@ class Subtree(object):
         self.store.update(data)
 
     @overload_(dict, (str, Path))
-    def __init__(self, data: dict, filepath: str | Path = None) -> None:
+    def __init__(self, data, filepath) -> None:
         """Instantiates a new Subtree object from data with filename"""
         if isinstance(filepath, str):
             filepath = Path(filepath)
@@ -68,15 +72,30 @@ class Subtree(object):
         self.store.update(data)
 
     @overload_((str, Path))
-    def __init__(self, filepath: str | Path = None) -> None:
+    def __init__(self, filepath) -> None:
         """Instantiates a new Subtree object from file"""
-        if filepath is not None:
-            self.treefile = filepath
+        if isinstance(filepath, str):
+            filepath = Path(filepath)
+        self.treefile = filepath
 
         if self.treefile.exists():
             data = self._load()
         else:
             self.treefile.touch(mode=0o644)
+            data = None
+
+        self.store = SubtreeStore()
+
+        if data is not None:
+            self.store.update(data)
+
+    @overload_()
+    def __init__(self):
+        """Instantiates a new Subtree object from defaults"""
+        if self.treefile.exists():
+            data = self._load()
+        else:
+            self.treefile.touch(0o644)
             data = None
 
         self.store = SubtreeStore()
@@ -128,7 +147,7 @@ class Subtree(object):
         else:
             kwargs["check"] = True
 
-        return exec_(cmd, **kwargs)
+        return run(cmd, **kwargs)
 
     def _write(self):
         """Write the contents of the store to the designated treefile"""
@@ -155,12 +174,13 @@ class Subtree(object):
 
         cmd = f"git remote add {label} {url}"
         parts = cmd.split()
-        self._run(parts)
+        self._run(parts, check=False)
 
         cmd = f"git subtree add --prefix {path} {label} {branch}{suffix}"
         parts = cmd.split()
-        self._run(parts)
+        self._run(parts, check=False)
 
+        self.store[label] = {}
         self.store[label]['path'] = path
         self.store[label]['url'] = url
         self.store[label]['branch'] = branch
