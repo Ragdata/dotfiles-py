@@ -44,11 +44,6 @@ elif len(files) > 1:
 else:
     raise ValueError("No settings files found")
 
-# dynaconf_args["root_path"] = str(Path.home())
-
-settings = Dynaconf(
-    LOADERS_FOR_DYNACONF=loaders,
-    ROOT_PATH_FOR_DYNACONF=Path.home()
-)
+settings = Dynaconf(LOADERS_FOR_DYNACONF=loaders, ROOT_PATH_FOR_DYNACONF=Path.home())
 
 settings.configure()
