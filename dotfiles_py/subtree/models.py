@@ -95,7 +95,7 @@ class Subtree(object):
         if self.treefile.exists():
             data = self._load()
         else:
-            self.treefile.touch(0o644)
+            self.treefile.touch(mode=0o644)
             data = None
 
         self.store = SubtreeStore()
@@ -219,15 +219,25 @@ class Subtree(object):
         # get subtree path
         path = self.store[f"{label}.path"]
         tree = "/".join([str(root), str(path)])
-        # remove remote
-        self._run(self._get_cmd(f"git remote remove {label}"), check=False)
-        # remove files
-        self._run(self._get_cmd(f"git rm -r {tree}"), check=False)
-        # remove data
-        if label in self.store.keys():
-            del self.store[label]
-        # rewrite treefile
-        self._write()
+        try:
+            # remove remote
+            self._run(self._get_cmd(f"git remote remove {label}"), check=False)
+        except Exception as e:
+            print(e)
+        try:
+            # remove files
+            self._run(self._get_cmd(f"git rm -r {tree}"), check=False)
+        except Exception as e:
+            print(e)
+            return False
+        try:
+            # remove data
+            if label in self.store.keys():
+                del self.store[label]
+            # rewrite treefile
+            self._write()
+        except Exception as e:
+            print(e)
 
         return True
 

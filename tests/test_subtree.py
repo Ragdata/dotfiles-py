@@ -57,7 +57,7 @@ def test_add(settings: Dynaconf):
     url = data[label]['url']
     branch = data[label]['branch']
 
-    result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"])
+    result = runner.invoke(app, [f"add '{label}' '{path}' '{url}' '{branch}'"], None, None, False, True)
 
     assert path and path == subdata.get(f"{label}.path")
     assert url and url == subdata.get(f"{label}.url")
