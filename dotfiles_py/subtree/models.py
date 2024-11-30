@@ -137,15 +137,8 @@ class Subtree(object):
 
     def _run(self, cmd: str, **kwargs) -> CompletedProcess[bytes]:
         """Execute command using subprocess"""
-        if 'cwd' in kwargs.keys():
-            kwargs.update({"cwd": config.get("dir.repo")})
-        else:
+        if 'cwd' not in kwargs.keys():
             kwargs["cwd"] = config.get("dir.repo")
-        if 'check' in kwargs.keys():
-            ckval = kwargs["check"]
-            kwargs.update({"check": ckval})
-        else:
-            kwargs["check"] = True
 
         return run(cmd, **kwargs)
 
@@ -221,12 +214,12 @@ class Subtree(object):
         tree = "/".join([str(root), str(path)])
         try:
             # remove remote
-            self._run(self._get_cmd(f"git remote remove {label}"), check=False)
+            self._run(self._get_cmd(f"git remote remove {label}"), check=False, capture_output=True)
         except Exception as e:
             print(e)
         try:
             # remove files
-            self._run(self._get_cmd(f"git rm -r {tree}"), check=False)
+            self._run(self._get_cmd(f"git rm -r {tree}"), check=False, capture_output=True)
         except Exception as e:
             print(e)
             return False
