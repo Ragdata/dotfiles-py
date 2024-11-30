@@ -14,19 +14,22 @@ copyright:      Copyright © 2024 Redeyed Technologies
 # DEPENDENCIES
 ####################################################################
 import os
+import tomllib
 
 from setuptools import setup
-from dotfiles_py import __pkg_version__
 ####################################################################
-# ATTRIBUTES
+# FUNCTIONS
 ####################################################################
-
+def _version():
+    with open("pyproject.toml", "rb") as f:
+        config = tomllib.load(f)
+    return config['project']['version']
 ####################################################################
 # MODULES
 ####################################################################
 setup(
     name="dotfiles-py",
-    version=__pkg_version__,
+    version=_version(),
     py_modules=["dotfiles_py"],
     packages=["dotfiles_py"],
     extras_require={
@@ -39,8 +42,11 @@ setup(
             "mkdocs~=1.6",
             "termynal~=0.12",
             "mkdocs-material~=9.5",
-            "pytest~=8.3"
+            "pytest~=8.3",
+            "setuptools~=75.3",
+            "wheel~=0.45"
         ],
+        "dev": ["setuptools~=75.3", "wheel~=0.45"],
         "docs": ["mkdocs~=1.6", "termynal~=0.12", "mkdocs-material~=9.5"],
         "tests": ["pytest~=8.3"]
     }

@@ -14,3 +14,7 @@ __pycache__/
 *secrets*
 
 !tests/.env
+
+# temp
+vendor/
+.subtrees.yml
