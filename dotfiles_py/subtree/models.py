@@ -217,6 +217,7 @@ class Subtree(object):
             self._run(self._get_cmd(f"git remote remove {label}"), check=False, capture_output=True)
         except Exception as e:
             print(e)
+        breakpoint()
         try:
             # remove files
             self._run(self._get_cmd(f"git rm -r {tree}"), check=False, capture_output=True)
