@@ -33,6 +33,9 @@ classifiers = [
 Homepage = "https://github.com/Ragdata/dotfiles-py"
 Repository = "https://github.com/Ragdata/dotfiles-py"
 
+[project.scripts]
+subtree = "dotfiles_py.subtree.cli:app"
+
 [project.optional-dependencies]
 dev = ["setuptools~=66.1", "wheel~=0.45"]
 docs = ["mkdocs~=1.6", "termynal~=0.12", "mkdocs-material~=9.5"]
