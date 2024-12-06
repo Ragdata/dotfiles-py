@@ -28,7 +28,8 @@ CFG_FILES: list = [".env", ".secrets.yml", "defaults.py", "defaults.yml", "setti
 CFG_DIRS: list = [
     REPO,
     Path(f"{str(REPO)}/src/cfg/.dotfiles"),
-    Path(f"{str(HOME)}/.dotfiles/cfg/.dotfiles")
+    Path(f"{str(HOME)}/.dotfiles/cfg/.dotfiles"),
+    Path(f"{str(REPO)}/tests/data")
 ]
 
 """ ============================================================ """
@@ -41,7 +42,7 @@ def get_config_files() -> list:
 
     for path in CFG_DIRS:
         for file in CFG_FILES:
-            if (path == REPO and file != ".env") or (path != REPO and file == ".env"):
+            if (path == REPO and file != ".env") or ((path != REPO and file == ".env") and (path != Path.joinpath(REPO, "tests/data") and file == ".env")):
                 continue
             p = Path("/".join([str(path), file]))
             if p.exists():
