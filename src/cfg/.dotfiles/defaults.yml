@@ -12,9 +12,11 @@ default:
     file:
         subtrees: "@path @format {this.dir.repo}/.subtrees.yml"
 prod:
-    dynaconf_include: ["@str @format {this.dir.conf.repo}/prod.yml"]
+    
 develop:
-    dynaconf_include: ["@str @format {this.dir.conf.repo}/dev.yml"]
+
 test:
-    dynaconf_include: ["@str @format {this.dir.conf.test}/test.yml"]
+    file:
+        subtrees: "@path @format {this.dir.conf.test}/.subtrees.yml"
+
 
