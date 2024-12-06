@@ -1,6 +1,22 @@
-dir:
-    home: "@format {env[HOME]}"
-    repo: "@format {this.dir.home}/.local/dotfiles-py"
-    user: "@format {this.dir.home}/.dotfiles"
-file:
-    subtrees: "@format {this.dir.repo}/.subtrees.yml"
+default:
+    dir:
+        home: "@path @format {env[HOME]}"
+        repo: "@path @format {env[REPO]}"
+        user: "@path @format {this.dir.home}/.dotfiles"
+        test: "@path @format {this.dir.repo}/tests"
+        conf:
+            repo: "@path @format {this.dir.repo}/src/cfg"
+            user: "@path @format {this.dir.user}/cfg"
+            test: "@path @format {this.dir.test}/data"
+        vend: "@path @format {this.dir.repo}/vendor"
+    file:
+        subtrees: "@path @format {this.dir.repo}/.subtrees.yml"
+prod:
+    
+develop:
+
+test:
+    file:
+        subtrees: "@path @format {this.dir.conf.test}/.subtrees.yml"
+
+

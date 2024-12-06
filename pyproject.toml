@@ -1,22 +1,21 @@
 [build-system]
-requires = ["setuptools~=75.3", "wheel~=0.45"]
+requires = ["setuptools~=66.1", "wheel~=0.45"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "dotfiles-py"
 version = "0.1.0"
-description = "A tool for managing dotfiles using Python3.10+"
+description = "A tool for managing dotfiles using Python3.11+"
 authors = [{name = "Ragdata", email = "ragdata@ragdata.dev"}]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = {file = "LICENSE"}
 keywords = ["dotfiles", "dotfile-management"]
 dependencies = [
     "dynaconf~=3.2",
     "multipledispatch~=1.0",
     "python-box[all]~=7.0",
-    "shellingham==1.4.0",
-    "typer~=0.13"
+    "typer~=0.15"
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -24,7 +23,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -33,24 +31,15 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/Ragdata/dotfiles-py"
-#Documentation = ""
 Repository = "https://github.com/Ragdata/dotfiles-py"
-#Issues = ""
-#Changelog = ""
-
-[project.scripts]
-subtree = "dotfiles_py.subtree.cli:app"
 
 [project.optional-dependencies]
-dev = ["setuptools~=75.3", "wheel~=0.45"]
+dev = ["setuptools~=66.1", "wheel~=0.45"]
 docs = ["mkdocs~=1.6", "termynal~=0.12", "mkdocs-material~=9.5"]
 tests = ["pytest~=8.3"]
 
 [tool.pytest.ini_options]
 minversion = "8.3"
-addopts = [
-    "-ra -q",
-    "--import-mode=importlib"
-]
+addopts = ["-ra -q", "--import-mode=importlib"]
 pythonpath = "dotfiles_py"
 testpaths = ["tests"]

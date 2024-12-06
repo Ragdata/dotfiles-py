@@ -1,6 +1,3 @@
-####################################################################
-# tests.test_config.py
-####################################################################
 """
 file:           test_config.py
 package:        tests
@@ -10,26 +7,21 @@ license:        MIT License
 repository:     https://github.com/Ragdata/dotfiles-py
 copyright:      Copyright © 2024 Redeyed Technologies
 """
-####################################################################
-# DEPENDENCIES
-####################################################################
-import os
+
+""" ============================================================ """
+""" DEPENDENCIES                                                 """
+""" ============================================================ """
 
 from pathlib import Path
 
-from dotfiles_py import HOME, CFG_FILES, CFG_DIRS
-####################################################################
-# ATTRIBUTES
-####################################################################
+""" ============================================================ """
+""" MODULE                                                       """
+""" ============================================================ """
 
-####################################################################
-# MODULES
-####################################################################
 def test_settings(settings):
     """`settings` is a fixture defined in conftest.py"""
-    assert HOME == Path.home()
-    assert CFG_FILES[0] == ".env"
-    assert CFG_DIRS[2] == Path.joinpath(Path.home(), ".dotfiles/cfg")
+    assert settings.current_env == "test"
+    assert settings.dir.home == Path.home()
     assert settings.PORT == 5000
-    assert isinstance(settings.PORT, int)
-    assert settings.get("dir.home") == str(Path.home())
+    assert settings.file.subtrees == Path.joinpath(settings.dir.conf.test, ".subtrees.yml")
+
