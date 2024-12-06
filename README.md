@@ -36,7 +36,7 @@ If you're new to `dotfiles`, you're not going to have a good time here.  The fir
 
 ## [Installation](#top) 📂
 
-### Option 1: Remote Installation Script
+<!-- ### Option 1: Remote Installation Script
 
 You can install my `dotfiles` with a single command:
 
@@ -57,7 +57,7 @@ You can then make your own modifications / configuration changes before installi
 
 ```bash
 source "$HOME/.local/dotfiles-py/install.sh"
-```
+``` -->
 
 [`^ Top`](#top)
 
@@ -65,12 +65,12 @@ source "$HOME/.local/dotfiles-py/install.sh"
 
 [`^ Top`](#top)
 
-## [Included 3rd-Party Packages](#top) 📦
+<!-- ## [Included 3rd-Party Packages](#top) 📦
 
 - [**Composure**](https://github.com/erichs/composure)<br />
   Copyright © 2012, 2016 Erich Smith<br />MIT Licensed
 
-[`^ Top`](#top)
+[`^ Top`](#top) -->
 
 ## [Project Supporters](#top) ❤️
 
