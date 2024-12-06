@@ -11,9 +11,13 @@ default:
         vend: "@path @format {this.dir.repo}/vendor"
     file:
         subtrees: "@path @format {this.dir.repo}/.subtrees.yml"
+    indent: "@int 4"
+
 prod:
-    
+
+
 develop:
+
 
 test:
     file:
